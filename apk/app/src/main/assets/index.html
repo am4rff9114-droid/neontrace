@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NEONTRACE — Demo Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;font-family:"Comic Neue",cursive;
+ color:#fff;background:
+ radial-gradient(circle at 20% 20%,#244b73 0,transparent 35%),
+ radial-gradient(circle at 80% 80%,#46235e 0,transparent 35%),
+ linear-gradient(135deg,#07111f,#111827 50%,#080d18);
+ display:flex;justify-content:center;align-items:center;padding:20px;
+ overflow-x:hidden
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;
+ background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+ background-size:35px 35px
+}
+.container{width:100%;max-width:850px}
+.logo{text-align:center;margin-bottom:20px}
+.logo h1{
+ font-family:Bangers,cursive;font-size:58px;letter-spacing:5px;
+ margin:0;text-shadow:0 0 25px #58d7ff
+}
+.logo p{margin:3px;color:#9fb3c8;font-size:13px;letter-spacing:3px}
+.glass{
+ background:rgba(255,255,255,.075);
+ border:1px solid rgba(255,255,255,.18);
+ box-shadow:0 25px 70px rgba(0,0,0,.45),inset 0 1px rgba(255,255,255,.12);
+ backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+ border-radius:25px;padding:28px
+}
+.search{display:flex;gap:12px}
+input{
+ flex:1;padding:17px 20px;border-radius:15px;
+ border:1px solid rgba(255,255,255,.2);
+ background:rgba(0,0,0,.2);color:#fff;outline:none;font-size:17px;
+ font-family:"Comic Neue",cursive
+}
+input::placeholder{color:#8192a5}
+button{
+ border:0;border-radius:15px;padding:0 25px;
+ background:linear-gradient(135deg,#57d9ff,#8b6cff);
+ color:#07111f;font-weight:bold;font-size:16px;
+ font-family:"Comic Neue",cursive;cursor:pointer;
+ box-shadow:0 8px 25px rgba(88,215,255,.2)
+}
+button:active{transform:scale(.97)}
+.status{text-align:center;min-height:35px;padding-top:18px;color:#69dcff;font-weight:bold}
+.loader{
+ width:100%;height:5px;background:rgba(255,255,255,.08);
+ border-radius:10px;overflow:hidden;margin:5px 0 20px;display:none
+}
+.loader i{
+ display:block;height:100%;width:0;
+ background:linear-gradient(90deg,#53ddff,#b37aff);
+ box-shadow:0 0 15px #53ddff
+}
+.card{display:none;animation:appear .5s ease}
+@keyframes appear{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+.badge{
+ display:inline-block;padding:6px 12px;border-radius:20px;
+ background:rgba(72,220,255,.12);border:1px solid rgba(72,220,255,.3);
+ color:#6de1ff;font-size:12px;margin-bottom:15px
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.item{
+ background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);
+ padding:14px;border-radius:14px
+}
+.item small{display:block;color:#8195aa;font-size:11px;letter-spacing:1px}
+.item b{display:block;margin-top:5px;font-size:15px;word-break:break-word}
+.notice{
+ margin-top:18px;padding:12px;border-radius:12px;text-align:center;
+ color:#a9b8c7;background:rgba(255,255,255,.035);font-size:12px
+}
+.footer{text-align:center;color:#617386;font-size:11px;margin-top:18px}
+@media(max-width:600px){
+ .search{flex-direction:column}
+ button{height:52px}
+ .grid{grid-template-columns:1fr}
+ .logo h1{font-size:46px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+ <div class="logo">
+  <h1>NEONTRACE</h1>
+  <p>DEMO INTELLIGENCE TERMINAL</p>
+ </div>
+
+ <div class="glass">
+  <div class="search">
+   <input id="phone" maxlength="10" inputmode="numeric" placeholder="Enter demo mobile number...">
+   <button onclick="searchData()">SCAN</button>
+  </div>
+
+  <div class="status" id="status"></div>
+  <div class="loader" id="loader"><i id="bar"></i></div>
+
+  <div class="card" id="result">
+   <span class="badge">● DEMO RECORD FOUND</span>
+   <div class="grid">
+    <div class="item"><small>MOBILE</small><b id="mobile"></b></div>
+    <div class="item"><small>NAME</small><b id="name"></b></div>
+    <div class="item"><small>DEMO ID</small><b id="aadhaar"></b></div>
+    <div class="item"><small>DEMO ACCOUNT</small><b id="account"></b></div>
+    <div class="item"><small>STATE</small><b id="state"></b></div>
+    <div class="item"><small>DISTRICT</small><b id="district"></b></div>
+    <div class="item"><small>ADDRESS</small><b id="address"></b></div>
+    <div class="item"><small>REGION</small><b id="region"></b></div>
+   </div>
+   <div class="notice">⚠ Synthetic demo data — not connected to any real identity, bank or government database.</div>
+  </div>
+ </div>
+
+ <div class="footer">LOCAL DEMO • NEONTRACE v1.0 • TERMUX</div>
+</div>
+
+<script>
+const data={
+"9000000001":{name:"A21512 KE616",aadhaar:"0000 0000 0001",account:"100000000001",state:"MADHYA PRADESH",district:"UMARIA",address:"MAJHTOLA",region:"INDIA"},
+"9000000002":{name:"B48216 RX204",aadhaar:"0000 0000 0002",account:"100000000002",state:"MADHYA PRADESH",district:"REWA",address:"DEMO NAGAR",region:"INDIA"},
+"9000000003":{name:"C73105 LM882",aadhaar:"0000 0000 0003",account:"100000000003",state:"MADHYA PRADESH",district:"SATNA",address:"TEST COLONY",region:"INDIA"},
+"9000000004":{name:"D19472 QP531",aadhaar:"0000 0000 0004",account:"100000000004",state:"MADHYA PRADESH",district:"SHAHDOL",address:"SAMPLE ROAD",region:"INDIA"},
+"9000000005":{name:"E62841 ZK315",aadhaar:"0000 0000 0005",account:"100000000005",state:"MADHYA PRADESH",district:"JABALPUR",address:"DEMO STREET",region:"INDIA"},
+"9000000006":{name:"F35019 TR728",aadhaar:"0000 0000 0006",account:"100000000006",state:"MADHYA PRADESH",district:"BHOPAL",address:"TEST BLOCK",region:"INDIA"},
+"9000000007":{name:"G84620 NP419",aadhaar:"0000 0000 0007",account:"100000000007",state:"MADHYA PRADESH",district:"INDORE",address:"SAMPLE LANE",region:"INDIA"},
+"9000000008":{name:"H21548 VK693",aadhaar:"0000 0000 0008",account:"100000000008",state:"MADHYA PRADESH",district:"SIDHI",address:"DEMO PURA",region:"INDIA"},
+"9000000009":{name:"J59031 WY247",aadhaar:"0000 0000 0009",account:"100000000009",state:"MADHYA PRADESH",district:"MANDLA",address:"TEST NAGAR",region:"INDIA"},
+"9000000010":{name:"K41726 AB805",aadhaar:"0000 0000 0010",account:"100000000010",state:"MADHYA PRADESH",district:"DINDORI",address:"SAMPLE ROAD",region:"INDIA"},
+"9000000011":{name:"L68214 CD316",aadhaar:"0000 0000 0011",account:"100000000011",state:"MADHYA PRADESH",district:"SEONI",address:"DEMO BLOCK",region:"INDIA"},
+"9000000012":{name:"M30851 EF927",aadhaar:"0000 0000 0012",account:"100000000012",state:"MADHYA PRADESH",district:"BETUL",address:"TEST STREET",region:"INDIA"},
+"9000000013":{name:"N75420 GH438",aadhaar:"0000 0000 0013",account:"100000000013",state:"MADHYA PRADESH",district:"RAISEN",address:"SAMPLE COLONY",region:"INDIA"},
+"9000000014":{name:"P12693 JK549",aadhaar:"0000 0000 0014",account:"100000000014",state:"MADHYA PRADESH",district:"SEHORE",address:"DEMO NAGAR",region:"INDIA"},
+"9000000015":{name:"Q48317 LM650",aadhaar:"0000 0000 0015",account:"100000000015",state:"MADHYA PRADESH",district:"Panna",address:"TEST PURA",region:"INDIA"},
+"9000000016":{name:"R92540 NO761",aadhaar:"0000 0000 0016",account:"100000000016",state:"MADHYA PRADESH",district:"TIKAMGARH",address:"SAMPLE LANE",region:"INDIA"},
+"9000000017":{name:"S31682 PQ872",aadhaar:"0000 0000 0017",account:"100000000017",state:"MADHYA PRADESH",district:"CHHATARPUR",address:"DEMO ROAD",region:"INDIA"},
+"9000000018":{name:"T67105 RS983",aadhaar:"0000 0000 0018",account:"100000000018",state:"MADHYA PRADESH",district:"SAGAR",address:"TEST COLONY",region:"INDIA"},
+"9000000019":{name:"U24836 TU194",aadhaar:"0000 0000 0019",account:"100000000019",state:"MADHYA PRADESH",district:"VIDISHA",address:"SAMPLE BLOCK",region:"INDIA"},
+"9000000020":{name:"V80317 VW205",aadhaar:"0000 0000 0020",account:"100000000020",state:"MADHYA PRADESH",district:"KATNI",address:"DEMO STREET",region:"INDIA"}
+};
+
+function searchData(){
+ const phone=document.getElementById("phone").value.trim();
+ const status=document.getElementById("status");
+ const loader=document.getElementById("loader");
+ const bar=document.getElementById("bar");
+ const result=document.getElementById("result");
+
+ result.style.display="none";
+ if(!/^9\d{9}$/.test(phone)){
+  status.textContent="⚠ Enter a valid 10-digit DEMO number";
+  return;
+ }
+
+ status.textContent="◈ CONNECTING TO LOCAL DEMO DATABASE...";
+ loader.style.display="block";
+ bar.style.width="0%";
+
+ let p=0;
+ const timer=setInterval(()=>{
+  p+=Math.random()*18;
+  if(p>100)p=100;
+  bar.style.width=p+"%";
+  if(p<35)status.textContent="◈ FETCHING DEMO RECORD...";
+  else if(p<70)status.textContent="◈ ANALYZING RECORD...";
+  else status.textContent="◈ VERIFYING SYNTHETIC DATA...";
+  if(p>=100){
+   clearInterval(timer);
+   setTimeout(()=>{
+    loader.style.display="none";
+    const d=data[phone];
+    if(!d){
+     status.textContent="✕ NO DEMO RECORD FOUND";
+     return;
+    }
+    status.textContent="✓ DEMO RECORD LOCATED";
+    document.getElementById("mobile").textContent=phone;
+    document.getElementById("name").textContent=d.name;
+    document.getElementById("aadhaar").textContent=d.aadhaar;
+    document.getElementById("account").textContent=d.account;
+    document.getElementById("state").textContent=d.state;
+    document.getElementById("district").textContent=d.district;
+    document.getElementById("address").textContent=d.address;
+    document.getElementById("region").textContent=d.region;
+    result.style.display="block";
+   },300);
+  }
+ },180);
+}
+document.getElementById("phone").addEventListener("keydown",e=>{
+ if(e.key==="Enter")searchData();
+});
+</script>
+</body>
+</html>
