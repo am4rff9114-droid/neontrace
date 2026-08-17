@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AM4RFF — 2050 DATA CORE</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    color:#111;
+    overflow-x:hidden;
+    background:
+        radial-gradient(circle at 20% 20%,rgba(0,170,255,.18),transparent 30%),
+        radial-gradient(circle at 80% 70%,rgba(120,0,255,.14),transparent 30%),
+        linear-gradient(135deg,#f8fbff,#e9eef5,#ffffff);
+}
+
+/* futuristic background */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+        linear-gradient(rgba(0,0,0,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,0,0,.025) 1px,transparent 1px);
+    background-size:35px 35px;
+    mask-image:linear-gradient(to bottom,black,transparent);
+}
+
+.orb{
+    position:fixed;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:.25;
+    pointer-events:none;
+}
+
+.orb1{
+    background:#00bfff;
+    top:-100px;
+    left:-100px;
+}
+
+.orb2{
+    background:#8a2be2;
+    right:-120px;
+    bottom:-100px;
+}
+
+/* main */
+
+.container{
+    width:min(1100px,94%);
+    margin:auto;
+    padding:25px 0 50px;
+}
+
+/* header */
+
+.header{
+    padding:28px;
+    border:1px solid rgba(255,255,255,.8);
+    background:rgba(255,255,255,.62);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+    border-radius:28px;
+    box-shadow:
+        0 25px 70px rgba(30,60,100,.12),
+        inset 0 1px 0 rgba(255,255,255,.9);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.header::after{
+    content:"";
+    position:absolute;
+    width:250px;
+    height:250px;
+    background:rgba(0,180,255,.12);
+    border-radius:50%;
+    filter:blur(50px);
+    right:-100px;
+    top:-120px;
+}
+
+.logo{
+    font-size:clamp(40px,10vw,78px);
+    font-weight:900;
+    letter-spacing:8px;
+    background:linear-gradient(90deg,#111,#00aaff,#6845ff,#111);
+    background-size:300%;
+    -webkit-background-clip:text;
+    color:transparent;
+    animation:gradient 5s linear infinite;
+}
+
+@keyframes gradient{
+    0%{background-position:0%}
+    100%{background-position:300%}
+}
+
+.subtitle{
+    margin-top:8px;
+    color:#667085;
+    letter-spacing:4px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* status */
+
+.status{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.status span{
+    padding:8px 14px;
+    border-radius:100px;
+    background:rgba(255,255,255,.7);
+    border:1px solid rgba(0,0,0,.06);
+    font-size:11px;
+    font-weight:bold;
+    color:#555;
+}
+
+.dot{
+    display:inline-block;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#20c978;
+    box-shadow:0 0 12px #20c978;
+    margin-right:5px;
+}
+
+/* search */
+
+.searchBox{
+    margin-top:25px;
+    padding:22px;
+    border-radius:25px;
+    background:rgba(255,255,255,.65);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.8);
+    box-shadow:0 20px 50px rgba(40,60,90,.1);
+}
+
+.searchTitle{
+    font-size:12px;
+    font-weight:bold;
+    color:#777;
+    letter-spacing:2px;
+    margin-bottom:12px;
+}
+
+.searchRow{
+    display:flex;
+    gap:10px;
+}
+
+input{
+    width:100%;
+    border:none;
+    outline:none;
+    padding:17px 18px;
+    border-radius:16px;
+    background:rgba(245,247,250,.9);
+    border:1px solid rgba(0,0,0,.06);
+    font-size:16px;
+    color:#111;
+    transition:.25s;
+}
+
+input:focus{
+    border-color:#00aaff;
+    box-shadow:0 0 0 4px rgba(0,170,255,.1);
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    padding:0 24px;
+    border-radius:16px;
+    font-weight:800;
+    transition:.25s;
+}
+
+.searchBtn{
+    background:#111;
+    color:white;
+    box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.quick{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+    flex-wrap:wrap;
+}
+
+.quick button{
+    padding:8px 12px;
+    background:white;
+    color:#555;
+    border:1px solid #eee;
+    font-size:11px;
+}
+
+/* result */
+
+.result{
+    margin-top:25px;
+    display:none;
+}
+
+.result.show{
+    display:block;
+    animation:appear .35s ease;
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.profile{
+    padding:25px;
+    border-radius:28px;
+    background:rgba(255,255,255,.68);
+    backdrop-filter:blur(25px);
+    border:1px solid rgba(255,255,255,.9);
+    box-shadow:0 25px 70px rgba(30,50,80,.12);
+}
+
+.profileTop{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:22px;
+}
+
+.profileTitle{
+    font-size:20px;
+    font-weight:900;
+}
+
+.badge{
+    padding:8px 12px;
+    border-radius:100px;
+    background:#eef8ff;
+    color:#0089d0;
+    font-size:10px;
+    font-weight:900;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.field{
+    padding:17px;
+    border-radius:18px;
+    background:rgba(248,250,252,.85);
+    border:1px solid rgba(0,0,0,.045);
+}
+
+.label{
+    font-size:9px;
+    letter-spacing:2px;
+    color:#89909c;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.value{
+    font-size:15px;
+    font-weight:800;
+    word-break:break-word;
+}
+
+.editInput{
+    display:none;
+    margin-top:3px;
+    padding:8px;
+    font-size:14px;
+}
+
+.editing .value{
+    display:none;
+}
+
+.editing .editInput{
+    display:block;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+}
+
+.editBtn{
+    padding:13px 20px;
+    background:#111;
+    color:#fff;
+}
+
+.saveBtn{
+    padding:13px 20px;
+    background:#00aaff;
+    color:white;
+    display:none;
+}
+
+.editing .saveBtn{
+    display:block;
+}
+
+.editing .editBtn{
+    display:none;
+}
+
+/* empty */
+
+.empty{
+    margin-top:25px;
+    padding:45px 20px;
+    text-align:center;
+    border-radius:25px;
+    background:rgba(255,255,255,.55);
+    border:1px solid rgba(255,255,255,.8);
+    color:#777;
+}
+
+.emptyIcon{
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+/* footer */
+
+.footer{
+    text-align:center;
+    margin-top:25px;
+    color:#8a919c;
+    font-size:10px;
+    letter-spacing:2px;
+}
+
+/* mobile */
+
+@media(max-width:650px){
+
+    .container{
+        width:94%;
+        padding-top:12px;
+    }
+
+    .header{
+        padding:25px 15px;
+        border-radius:22px;
+    }
+
+    .logo{
+        letter-spacing:5px;
+    }
+
+    .searchRow{
+        flex-direction:column;
+    }
+
+    .searchBtn{
+        height:50px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .profile{
+        padding:18px;
+    }
+
+    .profileTop{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="container">
+
+    <section class="header">
+
+        <div class="logo">AM4RFF</div>
+
+        <div class="subtitle">
+            FUTURE DATA CORE • SYSTEM 2050
+        </div>
+
+        <div class="status">
+            <span>
+                <i class="dot"></i>
+                SYSTEM ONLINE
+            </span>
+
+            <span>
+                200 DEMO RECORDS
+            </span>
+
+            <span>
+                LOCAL STORAGE
+            </span>
+        </div>
+
+    </section>
+
+
+    <section class="searchBox">
+
+        <div class="searchTitle">
+            ENTER DEMO NUMBER
+        </div>
+
+        <div class="searchRow">
+
+            <input
+                id="searchInput"
+                type="text"
+                maxlength="10"
+                placeholder="Example: 0000000001"
+                inputmode="numeric"
+            >
+
+            <button
+                class="searchBtn"
+                onclick="searchRecord()"
+            >
+                SEARCH
+            </button>
+
+        </div>
+
+        <div class="quick">
+
+            <button onclick="quickSearch('0000000001')">
+                #0000000001
+            </button>
+
+            <button onclick="quickSearch('0000000050')">
+                #0000000050
+            </button>
+
+            <button onclick="quickSearch('0000000100')">
+                #0000000100
+            </button>
+
+            <button onclick="quickSearch('0000000200')">
+                #0000000200
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <div id="result" class="result"></div>
+
+
+    <div id="empty" class="empty">
+
+        <div class="emptyIcon">⌬</div>
+
+        <strong>AM4RFF DATA CORE READY</strong>
+
+        <p style="margin-top:8px">
+            Search any demo number from 0000000001 to 0000000200
+        </p>
+
+    </div>
+
+
+    <div class="footer">
+        AM4RFF © 2050 • FICTIONAL DEMO SYSTEM
+    </div>
+
+</div>
+
+
+<script>
+
+/*
+    AM4RFF 2050 DEMO DATA CORE
+
+    200 fictional records are generated automatically.
+    Data is stored only inside this browser's localStorage.
+*/
+
+const STORAGE_KEY = "AM4RFF_2050_DEMO_DATABASE";
+
+let database = JSON.parse(
+    localStorage.getItem(STORAGE_KEY) || "null"
+);
+
+
+/* Create 200 records if database doesn't exist */
+
+if(!database){
+
+    database = [];
+
+    for(let i = 1; i <= 200; i++){
+
+        let id = String(i).padStart(10,"0");
+
+        database.push({
+
+            id:id,
+
+            name:"DEMO USER " + String(i).padStart(3,"0"),
+
+            demoId:"AM4-" + id,
+
+            demoAccount:"DEMO-" + id,
+
+            region:"INDIA DEMO",
+
+            state:"FICTIONAL STATE",
+
+            district:"DEMO DISTRICT",
+
+            address:"FICTIONAL DEMO ADDRESS " + i
+
+        });
+
+    }
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(database)
+    );
+}
+
+
+/* Search */
+
+function searchRecord(){
+
+    const input =
+        document.getElementById("searchInput");
+
+    const number =
+        input.value.trim();
+
+    if(!/^\d{1,10}$/.test(number)){
+
+        showEmpty(
+            "Invalid number",
+            "Enter a number between 0000000001 and 0000000200."
+        );
+
+        return;
+    }
+
+    const id =
+        number.padStart(10,"0");
+
+    const record =
+        database.find(item => item.id === id);
+
+    if(!record){
+
+        showEmpty(
+            "Record not found",
+            "This demo number does not exist in the AM4RFF demo database."
+        );
+
+        return;
+    }
+
+    displayRecord(record);
+}
+
+
+/* Display */
+
+function displayRecord(record){
+
+    document.getElementById("empty").style.display="none";
+
+    const result =
+        document.getElementById("result");
+
+    result.className="result show";
+
+    result.innerHTML = `
+
+        <div class="profile" id="profile">
+
+            <div class="profileTop">
+
+                <div>
+
+                    <div class="profileTitle">
+                        DEMO PROFILE
+                    </div>
+
+                    <div style="
+                        margin-top:5px;
+                        color:#8b929c;
+                        font-size:12px;
+                    ">
+                        RECORD #${record.id}
+                    </div>
+
+                </div>
+
+                <div class="badge">
+                    FICTIONAL DATA
+                </div>
+
+            </div>
+
+
+            <div class="grid">
+
+                ${field(
+                    "DEMO NAME",
+                    "name",
+                    record.name
+                )}
+
+                ${field(
+                    "DEMO ID",
+                    "demoId",
+                    record.demoId
+                )}
+
+                ${field(
+                    "DEMO ACCOUNT",
+                    "demoAccount",
+                    record.demoAccount
+                )}
+
+                ${field(
+                    "REGION",
+                    "region",
+                    record.region
+                )}
+
+                ${field(
+                    "STATE",
+                    "state",
+                    record.state
+                )}
+
+                ${field(
+                    "DISTRICT",
+                    "district",
+                    record.district
+                )}
+
+                ${field(
+                    "ADDRESS",
+                    "address",
+                    record.address
+                )}
+
+                ${field(
+                    "RECORD NUMBER",
+                    "id",
+                    record.id
+                )}
+
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    class="editBtn"
+                    onclick="editRecord('${record.id}')"
+                >
+                    EDIT
+                </button>
+
+                <button
+                    class="saveBtn"
+                    onclick="saveRecord('${record.id}')"
+                >
+                    SAVE
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* Field generator */
+
+function field(label,key,value){
+
+    return `
+
+        <div class="field">
+
+            <div class="label">
+                ${label}
+            </div>
+
+            <div class="value">
+                ${escapeHTML(value)}
+            </div>
+
+            <input
+                class="editInput"
+                data-key="${key}"
+                value="${escapeAttribute(value)}"
+            >
+
+        </div>
+    `;
+}
+
+
+/* Edit */
+
+function editRecord(id){
+
+    const profile =
+        document.getElementById("profile");
+
+    profile.classList.add("editing");
+
+}
+
+
+/* Save */
+
+function saveRecord(id){
+
+    const profile =
+        document.getElementById("profile");
+
+    const record =
+        database.find(item => item.id === id);
+
+    if(!record) return;
+
+    const inputs =
+        profile.querySelectorAll(".editInput");
+
+    inputs.forEach(input => {
+
+        const key =
+            input.dataset.key;
+
+        if(key !== "id"){
+
+            record[key] =
+                input.value.trim();
+        }
+
+    });
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(database)
+    );
+
+    displayRecord(record);
+
+}
+
+
+/* Quick search */
+
+function quickSearch(id){
+
+    document.getElementById(
+        "searchInput"
+    ).value=id;
+
+    searchRecord();
+
+}
+
+
+/* Empty screen */
+
+function showEmpty(title,text){
+
+    document.getElementById("result").className="result";
+
+    const empty =
+        document.getElementById("empty");
+
+    empty.style.display="block";
+
+    empty.innerHTML=`
+
+        <div class="emptyIcon">⌁</div>
+
+        <strong>${title}</strong>
+
+        <p style="margin-top:8px">
+            ${text}
+        </p>
+
+    `;
+}
+
+
+/* Security helpers for UI rendering */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function escapeAttribute(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/"/g,"&quot;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+}
+
+
+/* Enter key search */
+
+document
+.getElementById("searchInput")
+.addEventListener("keydown",function(e){
+
+    if(e.key==="Enter"){
+        searchRecord();
+    }
+
+});
+
+
+</script>
+
+</body>
+</html>
