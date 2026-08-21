@@ -1,29 +1,1230 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from datetime import datetime
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-class Handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        ip = self.client_address[0]
-        time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+<title>AM4RFF • Secure Portal 2050</title>
 
-        print(f"[{time}] Visitor IP: {ip}")
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap');
 
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
-        page = """
-        <html>
-        <head><title>Test Page</title></head>
-        <body>
-        <h2>IP Testing Page</h2>
-        <p>This page is for testing purposes.</p>
-        </body>
-        </html>
-        """
+body{
+    min-height:100vh;
+    font-family:Orbitron,Arial,sans-serif;
+    color:#fff;
+    background:
+      radial-gradient(circle at 20% 20%,#233a8c 0,transparent 30%),
+      radial-gradient(circle at 80% 80%,#711c86 0,transparent 30%),
+      linear-gradient(135deg,#03040c,#07152b,#12051d);
+    overflow-x:hidden;
+}
 
-        self.wfile.write(page.encode())
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:40px 40px;
+}
 
-server = HTTPServer(("0.0.0.0", 8080), Handler)
-print("Server running on port 8080...")
-server.serve_forever()
+/* ---------- GLASS ---------- */
+
+.glass{
+    background:rgba(255,255,255,.075);
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:
+      0 20px 70px rgba(0,0,0,.45),
+      inset 0 1px rgba(255,255,255,.15);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+    border-radius:25px;
+}
+
+/* ---------- LOGIN ---------- */
+
+#loginScreen{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.login{
+    width:100%;
+    max-width:430px;
+    padding:40px 30px;
+    text-align:center;
+    animation:appear .8s ease;
+}
+
+.logo{
+    font-size:34px;
+    font-weight:800;
+    letter-spacing:5px;
+    margin-bottom:8px;
+    text-shadow:0 0 25px #78a9ff;
+}
+
+.subtitle{
+    opacity:.6;
+    font-size:11px;
+    letter-spacing:3px;
+    margin-bottom:35px;
+}
+
+.lock{
+    font-size:65px;
+    margin-bottom:20px;
+    filter:drop-shadow(0 0 20px #61a6ff);
+}
+
+input,select,textarea{
+    width:100%;
+    padding:15px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.18);
+    outline:none;
+    color:white;
+    background:rgba(0,0,0,.3);
+    font-family:inherit;
+    margin-bottom:14px;
+}
+
+select option{
+    color:#000;
+}
+
+textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+input:focus,select:focus,textarea:focus{
+    border-color:#6ea8ff;
+    box-shadow:0 0 20px rgba(70,140,255,.25);
+}
+
+button{
+    border:0;
+    border-radius:14px;
+    padding:14px 20px;
+    color:white;
+    background:linear-gradient(135deg,#366dff,#a03cff);
+    font-family:inherit;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(96,82,255,.4);
+}
+
+.full{
+    width:100%;
+}
+
+.error{
+    color:#ff7194;
+    font-size:12px;
+    min-height:20px;
+    margin-top:10px;
+}
+
+/* ---------- APP ---------- */
+
+#app{
+    display:none;
+    min-height:100vh;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:10;
+    padding:15px 20px;
+    background:rgba(4,6,18,.72);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.nav{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.brand{
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:3px;
+}
+
+.menuBtn{
+    font-size:24px;
+    background:transparent;
+    padding:5px 10px;
+}
+
+main{
+    max-width:1200px;
+    margin:auto;
+    padding:30px 18px 80px;
+}
+
+/* ---------- SIDE MENU ---------- */
+
+#menu{
+    position:fixed;
+    top:0;
+    right:-330px;
+    width:310px;
+    height:100vh;
+    z-index:50;
+    padding:85px 25px 25px;
+    background:rgba(8,10,25,.93);
+    backdrop-filter:blur(30px);
+    border-left:1px solid rgba(255,255,255,.15);
+    transition:.35s;
+}
+
+#menu.open{
+    right:0;
+}
+
+#menu button{
+    width:100%;
+    margin-bottom:12px;
+}
+
+.close{
+    position:absolute;
+    top:20px;
+    right:20px;
+    background:transparent;
+    font-size:22px;
+}
+
+/* ---------- DASHBOARD ---------- */
+
+.hero{
+    padding:35px;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    font-size:clamp(28px,6vw,55px);
+    line-height:1.1;
+    margin-bottom:15px;
+}
+
+.hero p{
+    opacity:.65;
+    font-size:12px;
+    line-height:1.8;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+}
+
+.card{
+    padding:25px;
+}
+
+.card h3{
+    font-size:12px;
+    opacity:.6;
+    margin-bottom:12px;
+}
+
+.number{
+    font-size:30px;
+    font-weight:800;
+}
+
+.section{
+    margin-top:22px;
+}
+
+.sectionTitle{
+    margin-bottom:15px;
+    font-size:14px;
+    letter-spacing:2px;
+}
+
+/* ---------- TABLE ---------- */
+
+.tableWrap{
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+th,td{
+    padding:14px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    text-align:left;
+    font-size:11px;
+}
+
+th{
+    opacity:.5;
+}
+
+/* ---------- PUBLIC FORM ---------- */
+
+#publicForm{
+    display:none;
+    min-height:100vh;
+    padding:25px 15px;
+    align-items:center;
+    justify-content:center;
+}
+
+.formBox{
+    width:100%;
+    max-width:600px;
+    padding:30px;
+}
+
+.formBox h1{
+    margin-bottom:8px;
+}
+
+.formBox .small{
+    opacity:.55;
+    font-size:10px;
+    line-height:1.7;
+    margin-bottom:25px;
+}
+
+/* ---------- TOAST ---------- */
+
+#toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%) translateY(100px);
+    padding:14px 20px;
+    border-radius:14px;
+    background:rgba(15,20,40,.9);
+    border:1px solid rgba(255,255,255,.15);
+    backdrop-filter:blur(20px);
+    z-index:100;
+    transition:.35s;
+    font-size:11px;
+}
+
+#toast.show{
+    transform:translateX(-50%) translateY(0);
+}
+
+/* ---------- ANIMATION ---------- */
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(20px) scale(.98);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+@media(max-width:600px){
+    .login{
+        padding:30px 20px;
+    }
+
+    .hero{
+        padding:25px;
+    }
+
+    .formBox{
+        padding:22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     LOGIN
+====================================================== -->
+
+<div id="loginScreen">
+
+    <div class="login glass">
+
+        <div class="lock">🔐</div>
+
+        <div class="logo">AM4RFF</div>
+
+        <div class="subtitle">
+            SECURE CONTROL SYSTEM • 2050
+        </div>
+
+        <input
+            id="password"
+            type="password"
+            placeholder="ENTER SECURITY PASSWORD"
+            autocomplete="off"
+        >
+
+        <button class="full" onclick="login()">
+            UNLOCK SYSTEM
+        </button>
+
+        <div id="loginError" class="error"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADMIN APP
+====================================================== -->
+
+<div id="app">
+
+<header>
+
+<div class="nav">
+
+    <div class="brand">
+        AM4RFF
+    </div>
+
+    <button class="menuBtn" onclick="toggleMenu()">
+        ☰
+    </button>
+
+</div>
+
+</header>
+
+
+<!-- SIDE MENU -->
+
+<div id="menu" class="glass">
+
+    <button class="close" onclick="toggleMenu()">✕</button>
+
+    <button onclick="showDashboard();toggleMenu()">
+        🏠 Dashboard
+    </button>
+
+    <button onclick="generateLink();toggleMenu()">
+        🔗 Generate Form Link
+    </button>
+
+    <button onclick="changePassword();toggleMenu()">
+        🔑 Change Password
+    </button>
+
+    <button onclick="clearExpired();toggleMenu()">
+        🧹 Clean Expired Data
+    </button>
+
+    <button onclick="logout();">
+        🚪 Logout
+    </button>
+
+</div>
+
+
+<main>
+
+    <section class="hero glass">
+
+        <h1>
+            SECURE<br>
+            DATA PORTAL
+        </h1>
+
+        <p>
+            AM4RFF FUTURE CONTROL INTERFACE<br>
+            EDUCATIONAL DEMONSTRATION SYSTEM
+        </p>
+
+    </section>
+
+
+    <section class="grid">
+
+        <div class="card glass">
+            <h3>FORM OPENS</h3>
+            <div class="number" id="opens">0</div>
+        </div>
+
+        <div class="card glass">
+            <h3>SUBMISSIONS</h3>
+            <div class="number" id="submissions">0</div>
+        </div>
+
+        <div class="card glass">
+            <h3>ACTIVE DATA</h3>
+            <div class="number" id="active">0</div>
+        </div>
+
+    </section>
+
+
+    <section class="section glass card">
+
+        <div class="sectionTitle">
+            🔗 YOUR FORM LINK
+        </div>
+
+        <input
+            id="shareLink"
+            readonly
+            placeholder="Generate a form link"
+        >
+
+        <button onclick="generateLink()">
+            GENERATE LINK
+        </button>
+
+    </section>
+
+
+    <section class="section glass card">
+
+        <div class="sectionTitle">
+            📡 LIVE SUBMISSIONS
+        </div>
+
+        <div class="tableWrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>NAME</th>
+                    <th>ADDRESS</th>
+                    <th>REGION</th>
+                    <th>STATE</th>
+                    <th>DISTRICT</th>
+                    <th>VILLAGE</th>
+                    <th>TIME</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="dataTable"></tbody>
+
+        </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+</div>
+
+
+<!-- =====================================================
+     PUBLIC FORM
+====================================================== -->
+
+<div id="publicForm">
+
+    <div class="formBox glass">
+
+        <div class="logo">
+            AM4RFF
+        </div>
+
+        <h1>
+            INFORMATION FORM
+        </h1>
+
+        <div class="small">
+            Please enter only information you are comfortable
+            sharing for this educational demonstration.
+        </div>
+
+
+        <form onsubmit="submitForm(event)">
+
+            <input
+                id="name"
+                placeholder="FULL NAME"
+                required
+            >
+
+            <select id="region" onchange="loadCountries()" required>
+                <option value="">CHOOSE REGION</option>
+                <option>Asia</option>
+                <option>Europe</option>
+                <option>Africa</option>
+                <option>North America</option>
+                <option>South America</option>
+                <option>Oceania</option>
+                <option>Antarctica</option>
+            </select>
+
+
+            <select id="country" onchange="loadStates()" required>
+                <option value="">CHOOSE COUNTRY</option>
+            </select>
+
+
+            <select id="state" onchange="loadDistricts()" required>
+                <option value="">CHOOSE STATE</option>
+            </select>
+
+
+            <select id="district" required>
+                <option value="">CHOOSE DISTRICT</option>
+            </select>
+
+
+            <input
+                id="village"
+                placeholder="VILLAGE / CITY"
+                required
+            >
+
+
+            <textarea
+                id="address"
+                placeholder="ADDRESS"
+                required
+            ></textarea>
+
+
+            <button class="full" type="submit">
+                SEND INFORMATION 🚀
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div id="toast"></div>
+
+
+<script>
+
+/* =====================================================
+   CONFIGURATION
+====================================================== */
+
+const DEFAULT_PASSWORD = "@am4rff";
+
+let password =
+    localStorage.getItem("am4rff_password") ||
+    DEFAULT_PASSWORD;
+
+
+/* =====================================================
+   DATA
+====================================================== */
+
+let records =
+    JSON.parse(localStorage.getItem("am4rff_records") || "[]");
+
+let openCount =
+    Number(localStorage.getItem("am4rff_opens") || 0);
+
+
+/* =====================================================
+   DEMO LOCATION DATA
+====================================================== */
+
+const locationData = {
+
+    "Asia":{
+        "India":{
+            "Madhya Pradesh":[
+                "Umaria",
+                "Bhopal",
+                "Indore",
+                "Jabalpur",
+                "Rewa",
+                "Satna",
+                "Sagar",
+                "Ujjain"
+            ],
+
+            "Maharashtra":[
+                "Mumbai City",
+                "Pune",
+                "Nagpur",
+                "Nashik",
+                "Thane"
+            ],
+
+            "Uttar Pradesh":[
+                "Lucknow",
+                "Kanpur Nagar",
+                "Prayagraj",
+                "Varanasi",
+                "Agra"
+            ]
+        },
+
+        "Japan":{
+            "Tokyo":[
+                "Chiyoda",
+                "Shinjuku",
+                "Shibuya"
+            ]
+        },
+
+        "Nepal":{
+            "Bagmati":[
+                "Kathmandu",
+                "Lalitpur"
+            ]
+        }
+    },
+
+    "Europe":{
+        "United Kingdom":{
+            "England":[
+                "London",
+                "Manchester",
+                "Birmingham"
+            ]
+        },
+
+        "Germany":{
+            "Bavaria":[
+                "Munich",
+                "Nuremberg"
+            ]
+        }
+    },
+
+    "North America":{
+        "United States":{
+            "California":[
+                "Los Angeles",
+                "San Diego",
+                "San Francisco"
+            ],
+
+            "Texas":[
+                "Houston",
+                "Dallas",
+                "Austin"
+            ]
+        }
+    }
+
+};
+
+
+/* =====================================================
+   LOGIN
+====================================================== */
+
+function login(){
+
+    const entered =
+        document.getElementById("password").value;
+
+    if(entered === password){
+
+        document.getElementById("loginScreen").style.display="none";
+
+        document.getElementById("app").style.display="block";
+
+        refreshDashboard();
+
+        showToast("SYSTEM UNLOCKED");
+
+    }else{
+
+        document.getElementById("loginError").textContent =
+            "ACCESS DENIED • INVALID PASSWORD";
+
+    }
+}
+
+
+/* =====================================================
+   LOGOUT
+====================================================== */
+
+function logout(){
+
+    document.getElementById("app").style.display="none";
+
+    document.getElementById("loginScreen").style.display="flex";
+
+    document.getElementById("password").value="";
+
+}
+
+
+/* =====================================================
+   MENU
+====================================================== */
+
+function toggleMenu(){
+
+    document
+        .getElementById("menu")
+        .classList.toggle("open");
+
+}
+
+
+/* =====================================================
+   PASSWORD CHANGE
+====================================================== */
+
+function changePassword(){
+
+    const oldPass =
+        prompt("Enter current password:");
+
+    if(oldPass !== password){
+
+        alert("Wrong current password.");
+
+        return;
+    }
+
+    const newPass =
+        prompt("Enter new password:");
+
+    if(!newPass){
+
+        return;
+    }
+
+    password = newPass;
+
+    localStorage.setItem(
+        "am4rff_password",
+        newPass
+    );
+
+    showToast("PASSWORD CHANGED");
+
+}
+
+
+/* =====================================================
+   LINK
+====================================================== */
+
+function generateLink(){
+
+    const url =
+        window.location.origin +
+        window.location.pathname +
+        "?form=1";
+
+    document.getElementById("shareLink").value=url;
+
+    if(navigator.clipboard){
+
+        navigator.clipboard.writeText(url)
+        .catch(()=>{});
+
+    }
+
+    showToast("FORM LINK GENERATED");
+
+}
+
+
+/* =====================================================
+   PUBLIC FORM MODE
+====================================================== */
+
+function checkPublicForm(){
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    if(params.get("form") === "1"){
+
+        document.getElementById("loginScreen").style.display="none";
+
+        document.getElementById("app").style.display="none";
+
+        document.getElementById("publicForm").style.display="flex";
+
+        openCount++;
+
+        localStorage.setItem(
+            "am4rff_opens",
+            openCount
+        );
+    }
+}
+
+
+/* =====================================================
+   REGION → COUNTRY
+====================================================== */
+
+function loadCountries(){
+
+    const region =
+        document.getElementById("region").value;
+
+    const country =
+        document.getElementById("country");
+
+    country.innerHTML =
+        '<option value="">CHOOSE COUNTRY</option>';
+
+    if(!locationData[region]) return;
+
+    Object.keys(locationData[region])
+        .forEach(c=>{
+
+            const option =
+                document.createElement("option");
+
+            option.value=c;
+            option.textContent=c;
+
+            country.appendChild(option);
+
+        });
+
+    resetSelect("state","CHOOSE STATE");
+    resetSelect("district","CHOOSE DISTRICT");
+}
+
+
+/* =====================================================
+   COUNTRY → STATE
+====================================================== */
+
+function loadStates(){
+
+    const region =
+        document.getElementById("region").value;
+
+    const country =
+        document.getElementById("country").value;
+
+    const state =
+        document.getElementById("state");
+
+    state.innerHTML =
+        '<option value="">CHOOSE STATE</option>';
+
+    if(!locationData[region]?.[country]) return;
+
+    Object.keys(locationData[region][country])
+        .forEach(s=>{
+
+            const option =
+                document.createElement("option");
+
+            option.value=s;
+            option.textContent=s;
+
+            state.appendChild(option);
+
+        });
+
+    resetSelect("district","CHOOSE DISTRICT");
+}
+
+
+/* =====================================================
+   STATE → DISTRICT
+====================================================== */
+
+function loadDistricts(){
+
+    const region =
+        document.getElementById("region").value;
+
+    const country =
+        document.getElementById("country").value;
+
+    const state =
+        document.getElementById("state").value;
+
+    const district =
+        document.getElementById("district");
+
+    district.innerHTML =
+        '<option value="">CHOOSE DISTRICT</option>';
+
+    const districts =
+        locationData[region]?.[country]?.[state] || [];
+
+    districts.forEach(d=>{
+
+        const option =
+            document.createElement("option");
+
+        option.value=d;
+        option.textContent=d;
+
+        district.appendChild(option);
+
+    });
+
+}
+
+
+/* =====================================================
+   SUBMIT FORM
+====================================================== */
+
+function submitForm(event){
+
+    event.preventDefault();
+
+    const record={
+
+        name:
+            document.getElementById("name").value,
+
+        region:
+            document.getElementById("region").value,
+
+        country:
+            document.getElementById("country").value,
+
+        state:
+            document.getElementById("state").value,
+
+        district:
+            document.getElementById("district").value,
+
+        village:
+            document.getElementById("village").value,
+
+        address:
+            document.getElementById("address").value,
+
+        time:
+            new Date().toLocaleString(),
+
+        timestamp:
+            Date.now()
+
+    };
+
+
+    records.push(record);
+
+    localStorage.setItem(
+        "am4rff_records",
+        JSON.stringify(records)
+    );
+
+
+    showToast(
+        "INFORMATION SENT SUCCESSFULLY"
+    );
+
+
+    event.target.reset();
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+====================================================== */
+
+function refreshDashboard(){
+
+    clearExpired(false);
+
+    document.getElementById("opens").textContent =
+        openCount;
+
+    document.getElementById("submissions").textContent =
+        records.length;
+
+    document.getElementById("active").textContent =
+        records.length;
+
+    const table =
+        document.getElementById("dataTable");
+
+    table.innerHTML="";
+
+
+    records.forEach(r=>{
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML=`
+
+            <td>${escapeHTML(r.name)}</td>
+
+            <td>${escapeHTML(r.address)}</td>
+
+            <td>${escapeHTML(r.region)}</td>
+
+            <td>${escapeHTML(r.state)}</td>
+
+            <td>${escapeHTML(r.district)}</td>
+
+            <td>${escapeHTML(r.village)}</td>
+
+            <td>${escapeHTML(r.time)}</td>
+
+        `;
+
+        table.appendChild(tr);
+
+    });
+
+}
+
+
+/* =====================================================
+   24 HOUR EXPIRATION
+====================================================== */
+
+function clearExpired(show=true){
+
+    const now =
+        Date.now();
+
+    const DAY =
+        24 * 60 * 60 * 1000;
+
+    records =
+        records.filter(r =>
+            now - r.timestamp < DAY
+        );
+
+    localStorage.setItem(
+        "am4rff_records",
+        JSON.stringify(records)
+    );
+
+    if(show){
+
+        refreshDashboard();
+
+        showToast(
+            "EXPIRED DATA CLEANED"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SECURITY HELPERS
+====================================================== */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+function resetSelect(id,text){
+
+    document.getElementById(id).innerHTML =
+        `<option value="">${text}</option>`;
+
+}
+
+
+function showDashboard(){
+
+    document.getElementById("app").style.display="block";
+
+    refreshDashboard();
+
+}
+
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent=message;
+
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },2500);
+
+}
+
+
+/* =====================================================
+   AUTO CLEAN
+====================================================== */
+
+setInterval(()=>{
+
+    clearExpired(false);
+
+    if(
+        document.getElementById("app").style.display === "block"
+    ){
+
+        refreshDashboard();
+
+    }
+
+},60*1000);
+
+
+/* =====================================================
+   START
+====================================================== */
+
+checkPublicForm();
+
+</script>
+
+</body>
+</html>
