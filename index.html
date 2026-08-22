@@ -2,667 +2,668 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-<title>AM4RFF • Employee Intelligence</title>
+<title>AM4RFF • Ultimate Ludo</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&display=swap');
 
 *{
-    margin:0;
-    padding:0;
     box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
 :root{
-    --bg:#030712;
-    --glass:rgba(255,255,255,.075);
-    --glass2:rgba(255,255,255,.11);
-    --border:rgba(255,255,255,.16);
-    --text:#f7fbff;
-    --muted:#9aa9bb;
-    --cyan:#59e8ff;
-    --blue:#6588ff;
-    --purple:#b26cff;
-    --green:#61f6ad;
-    --danger:#ff6485;
-}
-
-html{
-    scroll-behavior:smooth;
+    --bg1:#07111f;
+    --bg2:#101b31;
+    --glass:rgba(255,255,255,.09);
+    --border:rgba(255,255,255,.18);
+    --white:#fff;
+    --green:#08b95a;
+    --yellow:#ffc928;
+    --red:#ef2638;
+    --blue:#28afe9;
 }
 
 body{
+    margin:0;
     min-height:100vh;
-    color:var(--text);
-    font-family:Inter,Arial,sans-serif;
+    font-family:Orbitron,Arial,sans-serif;
+    color:white;
     background:
-        radial-gradient(circle at 15% 15%,rgba(80,180,255,.18),transparent 28%),
-        radial-gradient(circle at 85% 20%,rgba(175,80,255,.16),transparent 30%),
-        radial-gradient(circle at 50% 90%,rgba(30,255,180,.09),transparent 30%),
-        var(--bg);
+        radial-gradient(circle at 20% 10%,rgba(0,255,120,.12),transparent 28%),
+        radial-gradient(circle at 85% 20%,rgba(0,160,255,.13),transparent 28%),
+        radial-gradient(circle at 50% 90%,rgba(255,0,50,.12),transparent 30%),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
     overflow-x:hidden;
 }
 
-/* BACKGROUND */
-
-body::before{
+body:before{
     content:"";
     position:fixed;
     inset:0;
     pointer-events:none;
-    opacity:.25;
-    background-image:
+    background:
         linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
         linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-    background-size:50px 50px;
-    mask-image:linear-gradient(to bottom,black,transparent);
+    background-size:35px 35px;
 }
 
-.orb{
-    position:fixed;
-    border-radius:50%;
-    filter:blur(70px);
-    opacity:.25;
-    pointer-events:none;
-    z-index:0;
-}
-
-.orb.one{
-    width:300px;
-    height:300px;
-    background:#347dff;
-    top:5%;
-    left:-100px;
-}
-
-.orb.two{
-    width:330px;
-    height:330px;
-    background:#a33dff;
-    right:-100px;
-    top:40%;
-}
-
-.orb.three{
-    width:260px;
-    height:260px;
-    background:#00e6c3;
-    left:35%;
-    bottom:-130px;
-}
-
-/* LOGIN */
-
-#loginScreen{
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:22px;
-    background:
-        radial-gradient(circle at 50% 35%,rgba(60,130,255,.13),transparent 38%),
-        rgba(1,5,13,.96);
-    backdrop-filter:blur(20px);
-}
-
-.login-box{
-    width:min(440px,100%);
-    padding:38px 30px;
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:30px;
-    background:
-        linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035));
-    box-shadow:
-        0 30px 100px rgba(0,0,0,.65),
-        inset 0 1px 0 rgba(255,255,255,.16);
-    backdrop-filter:blur(30px);
-    -webkit-backdrop-filter:blur(30px);
-    text-align:center;
-}
-
-.lock{
-    width:78px;
-    height:78px;
-    margin:0 auto 22px;
-    border-radius:25px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:37px;
-    background:linear-gradient(145deg,rgba(89,232,255,.18),rgba(178,108,255,.18));
-    border:1px solid rgba(255,255,255,.18);
-    box-shadow:0 0 45px rgba(89,232,255,.13);
-}
-
-.login-box h1{
-    font-family:Orbitron,sans-serif;
-    font-size:25px;
-    letter-spacing:2px;
-    margin-bottom:9px;
-}
-
-.login-box p{
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.6;
-    margin-bottom:25px;
-}
-
-.password-wrap{
-    position:relative;
-}
-
-.password-wrap input{
-    width:100%;
-    padding:17px 48px 17px 18px;
-    border-radius:16px;
-    border:1px solid rgba(255,255,255,.15);
-    outline:none;
-    background:rgba(0,0,0,.27);
-    color:white;
-    font-size:15px;
-    transition:.25s;
-}
-
-.password-wrap input:focus{
-    border-color:var(--cyan);
-    box-shadow:0 0 25px rgba(89,232,255,.13);
-}
-
-.toggle{
-    position:absolute;
-    right:15px;
-    top:50%;
-    transform:translateY(-50%);
-    cursor:pointer;
-    color:#aab8c8;
-}
-
-.login-btn{
-    width:100%;
-    margin-top:15px;
-    padding:16px;
-    border:none;
-    border-radius:16px;
-    color:#061019;
-    font-weight:800;
-    font-size:15px;
-    cursor:pointer;
-    background:linear-gradient(100deg,var(--cyan),#9eebff);
-    box-shadow:0 10px 35px rgba(89,232,255,.17);
-    transition:.25s;
-}
-
-.login-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 14px 45px rgba(89,232,255,.27);
-}
-
-.error{
-    min-height:20px;
-    margin-top:12px;
-    color:#ff7895;
-    font-size:12px;
-}
-
-.security-note{
-    margin-top:20px;
-    font-size:11px;
-    color:#718093;
-}
-
-/* APP */
-
-#app{
-    display:none;
-    position:relative;
-    z-index:2;
-}
-
-.container{
-    width:min(1200px,92%);
-    margin:auto;
-}
-
-/* HEADER */
+/* ================= HEADER ================= */
 
 header{
-    position:sticky;
-    top:0;
-    z-index:100;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    background:rgba(3,7,18,.66);
-    backdrop-filter:blur(24px);
-    -webkit-backdrop-filter:blur(24px);
-}
-
-.nav{
-    min-height:76px;
+    width:min(1200px,96%);
+    margin:12px auto 8px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:20px;
-}
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:11px;
-    font-family:Orbitron,sans-serif;
-    font-weight:800;
-    letter-spacing:1.5px;
-}
-
-.logo-icon{
-    width:38px;
-    height:38px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:12px;
-    background:linear-gradient(135deg,var(--cyan),var(--purple));
-    color:#061019;
-    font-weight:900;
-}
-
-.menu-btn{
-    width:43px;
-    height:43px;
-    border-radius:13px;
-    border:1px solid var(--border);
-    background:var(--glass);
-    color:white;
-    font-size:20px;
-    cursor:pointer;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-    position:fixed;
-    top:0;
-    right:-330px;
-    width:310px;
-    height:100vh;
-    z-index:500;
-    padding:90px 24px 25px;
-    background:rgba(7,13,25,.88);
-    border-left:1px solid rgba(255,255,255,.13);
-    backdrop-filter:blur(30px);
-    transition:.35s ease;
-}
-
-.sidebar.open{
-    right:0;
-}
-
-.sidebar h3{
-    font-family:Orbitron,sans-serif;
-    margin-bottom:25px;
-}
-
-.side-item{
-    padding:15px;
-    border-radius:14px;
-    margin-bottom:8px;
-    color:#c8d3df;
-    cursor:pointer;
-    border:1px solid transparent;
-}
-
-.side-item:hover{
-    background:rgba(255,255,255,.07);
-    border-color:var(--border);
-    color:white;
-}
-
-.close-side{
-    position:absolute;
-    top:25px;
-    right:22px;
-    cursor:pointer;
-    font-size:24px;
-}
-
-/* HERO */
-
-.hero{
-    padding:70px 0 35px;
-    text-align:center;
-}
-
-.badge{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 13px;
-    border:1px solid rgba(89,232,255,.18);
-    border-radius:100px;
-    color:#9defff;
-    background:rgba(89,232,255,.055);
-    font-size:11px;
-    letter-spacing:1px;
-    text-transform:uppercase;
-}
-
-.dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--green);
-    box-shadow:0 0 12px var(--green);
-}
-
-.hero h1{
-    margin:20px auto 13px;
-    max-width:900px;
-    font-family:Orbitron,sans-serif;
-    font-size:clamp(30px,6vw,65px);
-    line-height:1.05;
-    letter-spacing:-2px;
-}
-
-.gradient-text{
-    background:linear-gradient(90deg,#fff,var(--cyan),#b98cff);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-}
-
-.hero p{
-    max-width:650px;
-    margin:auto;
-    color:var(--muted);
-    line-height:1.7;
-    font-size:14px;
-}
-
-/* STATS */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin:25px 0;
-}
-
-.stat{
-    padding:22px;
-    border:1px solid var(--border);
-    border-radius:21px;
-    background:var(--glass);
-    backdrop-filter:blur(20px);
-}
-
-.stat small{
-    display:block;
-    color:#8795a7;
-    margin-bottom:7px;
-}
-
-.stat strong{
-    font-family:Orbitron,sans-serif;
-    font-size:21px;
-}
-
-/* SEARCH */
-
-.search-card{
-    padding:25px;
-    border-radius:27px;
-    border:1px solid var(--border);
-    background:
-        linear-gradient(135deg,rgba(255,255,255,.095),rgba(255,255,255,.035));
-    box-shadow:0 25px 70px rgba(0,0,0,.24);
-    backdrop-filter:blur(25px);
-}
-
-.search-card h2{
-    font-family:Orbitron,sans-serif;
-    font-size:18px;
-    margin-bottom:8px;
-}
-
-.search-card p{
-    color:var(--muted);
-    font-size:12px;
-    margin-bottom:18px;
-}
-
-.search-row{
-    display:flex;
     gap:10px;
 }
 
-.search-row input{
-    flex:1;
-    min-width:0;
-    padding:17px;
-    border-radius:15px;
-    border:1px solid rgba(255,255,255,.13);
-    outline:none;
+.logo{
+    font-size:clamp(18px,4vw,30px);
+    font-weight:900;
+    letter-spacing:2px;
+    text-shadow:0 0 15px rgba(255,255,255,.35);
+}
+
+.logo span{
+    color:#00eaff;
+}
+
+.topButtons{
+    display:flex;
+    gap:8px;
+}
+
+.iconBtn{
+    border:1px solid var(--border);
+    background:var(--glass);
     color:white;
-    background:rgba(0,0,0,.24);
-}
-
-.search-row input:focus{
-    border-color:var(--cyan);
-}
-
-.search-row button{
-    padding:0 22px;
-    border:none;
-    border-radius:15px;
+    width:43px;
+    height:43px;
+    border-radius:14px;
     cursor:pointer;
-    font-weight:800;
-    background:linear-gradient(100deg,var(--cyan),#9ceeff);
-    color:#07111c;
+    font-size:20px;
+    backdrop-filter:blur(12px);
 }
 
-/* RESULT */
-
-.result{
-    display:none;
-    margin-top:18px;
-    animation:show .35s ease;
+.iconBtn:active{
+    transform:scale(.92);
 }
 
-@keyframes show{
-    from{opacity:0;transform:translateY(8px)}
-    to{opacity:1;transform:translateY(0)}
+/* ================= GAME AREA ================= */
+
+.gameWrap{
+    width:min(1200px,96%);
+    margin:auto;
+    display:grid;
+    grid-template-columns:180px minmax(300px,720px) 180px;
+    gap:15px;
+    align-items:center;
+    justify-content:center;
 }
 
-.profile{
-    padding:25px;
-    border-radius:24px;
-    border:1px solid rgba(89,232,255,.18);
-    background:
-        radial-gradient(circle at top right,rgba(89,232,255,.09),transparent 35%),
-        rgba(255,255,255,.055);
+/* ================= PLAYER CARDS ================= */
+
+.side{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
 }
 
-.profile-top{
+.playerCard{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.07);
+    border-radius:18px;
+    padding:12px;
+    backdrop-filter:blur(15px);
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    transition:.3s;
+}
+
+.playerCard.active{
+    transform:translateY(-3px);
+    box-shadow:0 0 25px var(--player);
+    border-color:var(--player);
+}
+
+.playerHead{
     display:flex;
     align-items:center;
-    gap:15px;
-    margin-bottom:23px;
+    gap:8px;
+    font-size:12px;
+    font-weight:800;
 }
 
-.avatar{
-    width:57px;
-    height:57px;
+.colorDot{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--player);
+    box-shadow:0 0 12px var(--player);
+}
+
+.playerStatus{
+    margin-top:7px;
+    font-size:10px;
+    opacity:.75;
+}
+
+.playerProgress{
+    height:5px;
+    margin-top:9px;
+    border-radius:10px;
+    background:rgba(255,255,255,.1);
+    overflow:hidden;
+}
+
+.playerProgress div{
+    height:100%;
+    width:0%;
+    background:var(--player);
+    box-shadow:0 0 10px var(--player);
+    transition:.5s;
+}
+
+/* ================= BOARD ================= */
+
+.boardShell{
+    position:relative;
+    width:min(90vw,720px);
+    aspect-ratio:1;
+    margin:auto;
+    padding:8px;
+    border-radius:25px;
+    background:linear-gradient(145deg,#ffffff,#8b8b8b,#fff);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.55),
+        0 0 30px rgba(255,255,255,.12);
+}
+
+.board{
+    width:100%;
+    height:100%;
+    display:grid;
+    grid-template-columns:repeat(15,1fr);
+    grid-template-rows:repeat(15,1fr);
+    overflow:hidden;
     border-radius:18px;
+    background:#f8f8f8;
+    position:relative;
+}
+
+/* HOME */
+
+.home{
+    position:absolute;
+    width:40%;
+    height:40%;
+    z-index:2;
+    padding:6%;
+}
+
+.homeInner{
+    width:100%;
+    height:100%;
+    background:white;
+    border-radius:6px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    gap:10%;
+    padding:12%;
+    box-shadow:inset 0 0 10px rgba(0,0,0,.18);
+}
+
+.home.green{
+    left:0;
+    top:0;
+    background:var(--green);
+}
+
+.home.yellow{
+    right:0;
+    top:0;
+    background:var(--yellow);
+}
+
+.home.red{
+    left:0;
+    bottom:0;
+    background:var(--red);
+}
+
+.home.blue{
+    right:0;
+    bottom:0;
+    background:var(--blue);
+}
+
+.homeToken{
+    border-radius:50%;
+    border:2px solid rgba(0,0,0,.25);
+    box-shadow:
+        inset 4px 5px 8px rgba(255,255,255,.35),
+        inset -5px -6px 8px rgba(0,0,0,.2),
+        0 4px 8px rgba(0,0,0,.2);
+}
+
+.home.green .homeToken{background:var(--green)}
+.home.yellow .homeToken{background:var(--yellow)}
+.home.red .homeToken{background:var(--red)}
+.home.blue .homeToken{background:var(--blue)}
+
+/* GRID CELLS */
+
+.cell{
+    position:relative;
+    border:1px solid rgba(0,0,0,.16);
+    background:#fff;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-family:Orbitron,sans-serif;
-    background:linear-gradient(135deg,#4adfff,#9b70ff);
-    color:#061019;
-    font-weight:900;
 }
 
-.profile-top h3{
-    font-size:18px;
+.path{
+    background:#fff;
 }
 
-.profile-top span{
-    color:#8291a4;
-    font-size:12px;
+.safe:after{
+    content:"★";
+    color:#8c96a3;
+    font-size:clamp(8px,2vw,20px);
+    position:absolute;
 }
 
-.details{
+.greenLane{background:rgba(8,185,90,.92)!important}
+.yellowLane{background:rgba(255,201,40,.95)!important}
+.redLane{background:rgba(239,38,56,.92)!important}
+.blueLane{background:rgba(40,175,233,.92)!important}
+
+.start-green{background:var(--green)!important}
+.start-yellow{background:var(--yellow)!important}
+.start-red{background:var(--red)!important}
+.start-blue{background:var(--blue)!important}
+
+/* CENTER */
+
+.center{
+    position:absolute;
+    left:40%;
+    top:40%;
+    width:20%;
+    height:20%;
+    z-index:3;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+}
+
+.center div:nth-child(1){background:var(--green)}
+.center div:nth-child(2){background:var(--yellow)}
+.center div:nth-child(3){background:var(--red)}
+.center div:nth-child(4){background:var(--blue)}
+
+.center:after{
+    content:"";
+    position:absolute;
+    inset:23%;
+    background:white;
+    border-radius:50%;
+    box-shadow:0 0 20px rgba(255,255,255,.6);
+}
+
+/* ================= TOKENS ================= */
+
+.token{
+    position:absolute;
+    width:4.4%;
+    height:4.4%;
+    border-radius:50%;
+    z-index:20;
+    cursor:pointer;
+    transform:translate(-50%,-50%);
+    transition:
+        left .32s cubic-bezier(.2,.8,.2,1),
+        top .32s cubic-bezier(.2,.8,.2,1),
+        transform .15s;
+    border:2px solid rgba(0,0,0,.3);
+    box-shadow:
+        inset 3px 4px 6px rgba(255,255,255,.45),
+        inset -4px -5px 7px rgba(0,0,0,.25),
+        0 4px 9px rgba(0,0,0,.35);
+}
+
+.token.green{background:var(--green)}
+.token.yellow{background:var(--yellow)}
+.token.red{background:var(--red)}
+.token.blue{background:var(--blue)}
+
+.token.movable{
+    animation:tokenPulse .8s infinite alternate;
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,.5),
+        0 0 20px var(--tokenGlow);
+}
+
+.token.selected{
+    transform:translate(-50%,-50%) scale(1.18);
+}
+
+@keyframes tokenPulse{
+    from{filter:brightness(1)}
+    to{filter:brightness(1.45)}
+}
+
+/* ================= DICE ================= */
+
+.dicePanel{
+    margin:10px auto 15px;
+    width:min(90%,360px);
+    padding:12px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.08);
+    border-radius:20px;
+    backdrop-filter:blur(15px);
+    text-align:center;
+}
+
+.turnText{
+    font-size:11px;
+    opacity:.8;
+    margin-bottom:8px;
+}
+
+.diceRow{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
+
+.dice{
+    width:70px;
+    height:70px;
+    border-radius:16px;
+    background:white;
+    color:#111;
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:11px;
+    grid-template-rows:repeat(3,1fr);
+    padding:10px;
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.35),
+        inset 0 0 5px rgba(0,0,0,.2);
+    cursor:pointer;
+    user-select:none;
 }
 
-.detail{
-    padding:16px;
-    border-radius:15px;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(0,0,0,.18);
+.dice.rolling{
+    animation:diceRoll .55s infinite linear;
 }
 
-.detail label{
-    display:block;
-    font-size:10px;
-    color:#758397;
-    margin-bottom:7px;
-    letter-spacing:.7px;
+@keyframes diceRoll{
+    0%{transform:rotate(0) scale(1)}
+    25%{transform:rotate(90deg) scale(1.08)}
+    50%{transform:rotate(180deg) scale(.95)}
+    75%{transform:rotate(270deg) scale(1.08)}
+    100%{transform:rotate(360deg) scale(1)}
 }
 
-.detail b{
-    font-size:13px;
-    word-break:break-word;
+.dot{
+    width:11px;
+    height:11px;
+    background:#111;
+    border-radius:50%;
+    align-self:center;
+    justify-self:center;
 }
 
-.not-found{
-    padding:20px;
-    border-radius:17px;
-    border:1px solid rgba(255,100,133,.2);
-    color:#ff9aae;
-    background:rgba(255,80,110,.05);
+.rollButton{
+    border:0;
+    border-radius:13px;
+    padding:12px 18px;
+    font-family:inherit;
+    font-size:11px;
+    font-weight:900;
+    background:linear-gradient(135deg,#00eaff,#0078ff);
+    color:white;
+    box-shadow:0 0 20px rgba(0,210,255,.35);
+    cursor:pointer;
 }
 
-/* INFO */
-
-.info{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-    margin:25px 0 60px;
+.rollButton:active{
+    transform:scale(.94);
 }
 
-.info-card{
-    padding:23px;
-    border-radius:22px;
-    border:1px solid var(--border);
-    background:var(--glass);
+.rollButton:disabled{
+    opacity:.45;
 }
 
-.info-card h3{
-    font-family:Orbitron,sans-serif;
-    font-size:14px;
-    margin-bottom:10px;
+/* ================= MENU ================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(12px);
+    z-index:100;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
 }
 
-.info-card p{
-    color:#8998aa;
-    font-size:12px;
-    line-height:1.7;
+.overlay.show{
+    display:flex;
 }
 
-/* FOOTER */
+.menu{
+    width:min(430px,95vw);
+    max-height:90vh;
+    overflow:auto;
+    background:linear-gradient(145deg,rgba(25,35,55,.98),rgba(8,15,28,.98));
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:25px;
+    padding:22px;
+    box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
 
-footer{
-    padding:30px 0 45px;
-    border-top:1px solid rgba(255,255,255,.07);
+.menu h2{
+    margin:0 0 18px;
     text-align:center;
-    color:#617084;
+    font-size:22px;
+}
+
+.setting{
+    margin-bottom:18px;
+}
+
+.setting label{
+    display:block;
+    font-size:11px;
+    opacity:.7;
+    margin-bottom:8px;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.options button,
+.modeBtn{
+    border:1px solid rgba(255,255,255,.15);
+    color:white;
+    background:rgba(255,255,255,.07);
+    padding:12px 5px;
+    border-radius:12px;
+    font-family:inherit;
+    font-size:10px;
+    cursor:pointer;
+}
+
+.options button.active,
+.modeBtn.active{
+    background:#087fff;
+    border-color:#38baff;
+    box-shadow:0 0 15px rgba(0,150,255,.3);
+}
+
+.modeButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.menuActions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:20px;
+}
+
+.menuActions button{
+    padding:13px;
+    border:0;
+    border-radius:13px;
+    font-family:inherit;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.startGame{
+    background:linear-gradient(135deg,#00d87a,#008cff);
+    color:white;
+}
+
+.closeMenu{
+    background:rgba(255,255,255,.1);
+    color:white;
+}
+
+/* ================= WINNER ================= */
+
+.winnerBox{
+    text-align:center;
+}
+
+.trophy{
+    font-size:70px;
+    animation:trophy .8s infinite alternate;
+}
+
+@keyframes trophy{
+    from{transform:translateY(0) rotate(-4deg)}
+    to{transform:translateY(-10px) rotate(4deg)}
+}
+
+.winnerBox h2{
+    font-size:26px;
+    margin:5px 0;
+}
+
+.winnerBox p{
+    opacity:.7;
     font-size:11px;
 }
 
-/* TOAST */
+/* ================= TOAST ================= */
 
 .toast{
     position:fixed;
     left:50%;
     bottom:25px;
-    transform:translate(-50%,30px);
+    transform:translateX(-50%) translateY(80px);
+    background:rgba(15,20,30,.94);
+    border:1px solid rgba(255,255,255,.2);
+    padding:12px 18px;
+    border-radius:15px;
+    font-size:10px;
+    z-index:150;
     opacity:0;
-    z-index:999;
-    padding:13px 18px;
-    border-radius:14px;
-    background:rgba(10,18,32,.9);
-    border:1px solid rgba(255,255,255,.15);
-    backdrop-filter:blur(20px);
-    font-size:12px;
     transition:.3s;
+    pointer-events:none;
 }
 
 .toast.show{
     opacity:1;
-    transform:translate(-50%,0);
+    transform:translateX(-50%) translateY(0);
 }
 
-/* MOBILE */
+/* ================= RESPONSIVE ================= */
 
-@media(max-width:700px){
-
-    .container{
-        width:92%;
-    }
-
-    .nav{
-        min-height:68px;
-    }
-
-    .hero{
-        padding-top:50px;
-    }
-
-    .hero h1{
-        letter-spacing:-1px;
-    }
-
-    .stats{
+@media(max-width:850px){
+    .gameWrap{
         grid-template-columns:1fr;
     }
 
-    .search-row{
-        flex-direction:column;
-    }
-
-    .search-row button{
-        min-height:50px;
-    }
-
-    .details{
+    .side{
+        display:grid;
         grid-template-columns:1fr 1fr;
+        order:2;
     }
 
-    .info{
-        grid-template-columns:1fr;
+    .boardArea{
+        order:1;
     }
 
-    .sidebar{
-        width:88%;
+    .rightSide{
+        order:3;
+    }
+
+    .playerCard{
+        padding:8px;
+    }
+
+    .dicePanel{
+        margin-top:8px;
     }
 }
 
-@media(max-width:430px){
-
-    .login-box{
-        padding:30px 20px;
+@media(max-width:450px){
+    header{
+        margin-top:7px;
     }
 
-    .details{
-        grid-template-columns:1fr;
+    .logo{
+        font-size:16px;
+    }
+
+    .iconBtn{
+        width:38px;
+        height:38px;
+    }
+
+    .boardShell{
+        padding:4px;
+        border-radius:17px;
+    }
+
+    .board{
+        border-radius:13px;
+    }
+
+    .homeInner{
+        gap:7%;
+    }
+
+    .dice{
+        width:58px;
+        height:58px;
+    }
+
+    .dot{
+        width:8px;
+        height:8px;
+    }
+
+    .rollButton{
+        padding:10px 13px;
     }
 }
 </style>
@@ -670,514 +671,1787 @@ footer{
 
 <body>
 
-<div class="orb one"></div>
-<div class="orb two"></div>
-<div class="orb three"></div>
-
-<!-- LOGIN -->
-
-<section id="loginScreen">
-
-    <div class="login-box">
-
-        <div class="lock">🔐</div>
-
-        <h1>SECURE ACCESS</h1>
-
-        <p>
-            AM4RFF Employee Intelligence System<br>
-            Enter your authorized access password.
-        </p>
-
-        <div class="password-wrap">
-            <input
-                id="password"
-                type="password"
-                placeholder="Enter access password"
-                autocomplete="off"
-                onkeydown="if(event.key==='Enter')login()"
-            >
-            <span class="toggle" onclick="togglePassword()">◉</span>
-        </div>
-
-        <button class="login-btn" onclick="login()">
-            UNLOCK SYSTEM →
-        </button>
-
-        <div class="error" id="loginError"></div>
-
-        <div class="security-note">
-            🔒 Protected interface • Demo environment
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- APPLICATION -->
-
-<div id="app">
-
 <header>
+    <div class="logo">AM4RFF <span>• LUDO</span></div>
 
-    <div class="container nav">
-
-        <div class="logo">
-            <div class="logo-icon">A</div>
-            AM4RFF
-        </div>
-
-        <button class="menu-btn" onclick="openMenu()">☰</button>
-
+    <div class="topButtons">
+        <button class="iconBtn" id="soundBtn">🔊</button>
+        <button class="iconBtn" id="menuBtn">⚙️</button>
     </div>
-
 </header>
 
+<div class="gameWrap">
 
-<!-- SIDEBAR -->
+    <!-- LEFT PLAYERS -->
+    <div class="side leftSide" id="leftPlayers"></div>
 
-<aside class="sidebar" id="sidebar">
+    <!-- BOARD -->
+    <div class="boardArea">
 
-    <div class="close-side" onclick="closeMenu()">×</div>
+        <div class="boardShell">
+            <div class="board" id="board">
 
-    <h3>SYSTEM MENU</h3>
+                <!-- HOME AREAS -->
+                <div class="home green">
+                    <div class="homeInner">
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                    </div>
+                </div>
 
-    <div class="side-item" onclick="goHome()">
-        🏠 Dashboard
-    </div>
+                <div class="home yellow">
+                    <div class="homeInner">
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                    </div>
+                </div>
 
-    <div class="side-item" onclick="focusSearch()">
-        🔎 Employee Search
-    </div>
+                <div class="home red">
+                    <div class="homeInner">
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                    </div>
+                </div>
 
-    <div class="side-item" onclick="showAbout()">
-        💠 About System
-    </div>
+                <div class="home blue">
+                    <div class="homeInner">
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                        <div class="homeToken"></div>
+                    </div>
+                </div>
 
-    <div class="side-item" onclick="logout()">
-        🔒 Lock System
-    </div>
+                <!-- CENTER -->
+                <div class="center">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
 
-</aside>
-
-
-<main>
-
-<section class="hero">
-
-    <div class="badge">
-        <span class="dot"></span>
-        SYSTEM ONLINE
-    </div>
-
-    <h1>
-        EMPLOYEE
-        <span class="gradient-text">INTELLIGENCE</span>
-    </h1>
-
-    <p>
-        A futuristic employee identification interface for
-        searching and displaying synthetic employee information.
-    </p>
-
-</section>
-
-
-<div class="container">
-
-    <!-- STATS -->
-
-    <section class="stats">
-
-        <div class="stat">
-            <small>TOTAL EMPLOYEE IDs</small>
-            <strong>100,000</strong>
+            </div>
         </div>
 
-        <div class="stat">
-            <small>ID RANGE</small>
-            <strong>4400000001</strong>
+        <!-- DICE -->
+        <div class="dicePanel">
+
+            <div class="turnText" id="turnText">
+                Green player's turn
+            </div>
+
+            <div class="diceRow">
+
+                <div class="dice" id="dice">
+                    <div></div><div></div><div></div>
+                    <div></div><div class="dot"></div><div></div>
+                    <div></div><div></div><div></div>
+                </div>
+
+                <button class="rollButton" id="rollBtn">
+                    🎲 ROLL DICE
+                </button>
+
+            </div>
         </div>
 
-        <div class="stat">
-            <small>DATABASE STATUS</small>
-            <strong style="color:var(--green)">ONLINE</strong>
+    </div>
+
+    <!-- RIGHT PLAYERS -->
+    <div class="side rightSide" id="rightPlayers"></div>
+
+</div>
+
+<!-- SETTINGS MENU -->
+
+<div class="overlay" id="menuOverlay">
+
+    <div class="menu">
+
+        <h2>⚙️ LUDO SETTINGS</h2>
+
+        <div class="setting">
+
+            <label>PLAYERS</label>
+
+            <div class="options">
+                <button data-players="2">2 PLAYERS</button>
+                <button data-players="3">3 PLAYERS</button>
+                <button data-players="4" class="active">4 PLAYERS</button>
+            </div>
+
         </div>
 
-    </section>
+        <div class="setting">
 
+            <label>GAME MODE</label>
 
-    <!-- SEARCH -->
+            <div class="modeButtons">
+                <button class="modeBtn active" data-mode="human">
+                    👥 HUMAN
+                </button>
 
-    <section class="search-card" id="searchSection">
+                <button class="modeBtn" data-mode="computer">
+                    🤖 VS COMPUTER
+                </button>
+            </div>
 
-        <h2>EMPLOYEE LOOKUP</h2>
+        </div>
 
-        <p>
-            Enter an Employee ID from 4400000001 to 4400100000.
-        </p>
+        <div class="setting">
 
-        <div class="search-row">
+            <label>SOUND</label>
 
-            <input
-                id="employeeId"
-                inputmode="numeric"
-                maxlength="10"
-                placeholder="Example: 4400000001"
-                onkeydown="if(event.key==='Enter')searchEmployee()"
-            >
+            <div class="modeButtons">
 
-            <button onclick="searchEmployee()">
-                SEARCH
+                <button class="modeBtn active" id="soundOn">
+                    🔊 SOUND ON
+                </button>
+
+                <button class="modeBtn" id="soundOff">
+                    🔇 SOUND OFF
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="menuActions">
+
+            <button class="startGame" id="newGameBtn">
+                NEW GAME
+            </button>
+
+            <button class="closeMenu" id="closeMenuBtn">
+                CLOSE
             </button>
 
         </div>
 
-        <div class="result" id="result"></div>
-
-    </section>
-
-
-    <!-- INFORMATION -->
-
-    <section class="info" id="about">
-
-        <div class="info-card">
-
-            <h3>⚡ FAST LOOKUP</h3>
-
-            <p>
-                Employee IDs are generated mathematically inside the
-                browser, allowing this demo to represent 100,000
-                synthetic employee records without storing a huge
-                database inside the HTML file.
-            </p>
-
-        </div>
-
-        <div class="info-card">
-
-            <h3>🧊 GLASS INTERFACE</h3>
-
-            <p>
-                The interface uses glassmorphism, responsive layouts,
-                gradients, blur effects and futuristic UI elements
-                for a modern dashboard experience.
-            </p>
-
-        </div>
-
-    </section>
+    </div>
 
 </div>
 
-</main>
+<!-- WINNER -->
 
+<div class="overlay" id="winnerOverlay">
 
-<footer>
-    AM4RFF • Employee Intelligence Demo • Synthetic Data Only
-</footer>
+    <div class="menu winnerBox">
+
+        <div class="trophy">🏆</div>
+
+        <h2 id="winnerTitle">
+            GREEN WINS!
+        </h2>
+
+        <p id="winnerMessage">
+            All 4 tokens reached home.
+        </p>
+
+        <div class="menuActions">
+
+            <button class="startGame" id="playAgainBtn">
+                PLAY AGAIN
+            </button>
+
+            <button class="closeMenu" id="winnerCloseBtn">
+                CLOSE
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
-
 
 <div class="toast" id="toast"></div>
 
-
 <script>
 
-/* ==========================================
-   CONFIGURATION
-========================================== */
+/* =========================================================
+   AM4RFF ULTIMATE LUDO
+   ========================================================= */
 
-const ACCESS_PASSWORD = "AM4R9114";
+/* COLORS */
 
-const FIRST_ID = 4400000001;
-const LAST_ID  = 4400100000;
+const COLORS = {
+    green:{
+        name:"GREEN",
+        css:"#08b95a",
+        start:0,
+        homeClass:"green"
+    },
 
+    yellow:{
+        name:"YELLOW",
+        css:"#ffc928",
+        start:13,
+        homeClass:"yellow"
+    },
 
-/* ==========================================
-   LOGIN
-========================================== */
+    blue:{
+        name:"BLUE",
+        css:"#28afe9",
+        start:26,
+        homeClass:"blue"
+    },
 
-function login(){
-
-    const input = document.getElementById("password");
-    const error = document.getElementById("loginError");
-
-    if(input.value === ACCESS_PASSWORD){
-
-        document.getElementById("loginScreen").style.display = "none";
-        document.getElementById("app").style.display = "block";
-
-        error.textContent = "";
-
-        showToast("Access granted • System unlocked");
-
-    }else{
-
-        error.textContent = "Incorrect password. Access denied.";
-
-        input.value = "";
-
-        input.animate(
-            [
-                {transform:"translateX(0)"},
-                {transform:"translateX(-7px)"},
-                {transform:"translateX(7px)"},
-                {transform:"translateX(0)"}
-            ],
-            {duration:250}
-        );
+    red:{
+        name:"RED",
+        css:"#ef2638",
+        start:39,
+        homeClass:"red"
     }
+};
+
+/*
+   52 MAIN TRACK CELLS
+
+   The coordinates represent the 15 x 15
+   Ludo board.
+*/
+
+const PATH = [
+
+    [6,0],[6,1],[6,2],[6,3],[6,4],[6,5],
+
+    [5,6],[4,6],[3,6],[2,6],[1,6],[0,6],
+
+    [0,7],[0,8],
+
+    [1,8],[2,8],[3,8],[4,8],[5,8],
+
+    [6,9],[6,10],[6,11],[6,12],[6,13],[6,14],
+
+    [7,14],[8,14],
+
+    [8,13],[8,12],[8,11],[8,10],[8,9],
+
+    [9,8],[10,8],[11,8],[12,8],[13,8],[14,8],
+
+    [14,7],[14,6],
+
+    [13,6],[12,6],[11,6],[10,6],[9,6],
+
+    [8,5],[8,4],[8,3],[8,2],[8,1],[8,0],
+
+    [7,0]
+];
+
+/*
+   HOME LANES
+*/
+
+const HOME_LANES = {
+
+    green:[
+        [7,1],[7,2],[7,3],[7,4],[7,5],[7,6]
+    ],
+
+    yellow:[
+        [1,7],[2,7],[3,7],[4,7],[5,7],[6,7]
+    ],
+
+    blue:[
+        [7,13],[7,12],[7,11],[7,10],[7,9],[7,8]
+    ],
+
+    red:[
+        [13,7],[12,7],[11,7],[10,7],[9,7],[8,7]
+    ]
+
+};
+
+/*
+   TOKEN YARD POSITIONS
+   relative percentage positions inside board
+*/
+
+const YARDS = {
+
+    green:[
+        [20,20],
+        [33,20],
+        [20,33],
+        [33,33]
+    ],
+
+    yellow:[
+        [67,20],
+        [80,20],
+        [67,33],
+        [80,33]
+    ],
+
+    red:[
+        [20,67],
+        [33,67],
+        [20,80],
+        [33,80]
+    ],
+
+    blue:[
+        [67,67],
+        [80,67],
+        [67,80],
+        [80,80]
+    ]
+
+};
+
+/*
+   SAFE CELLS
+*/
+
+const SAFE_INDEXES = new Set([
+    0,8,13,21,26,34,39,47
+]);
+
+/* =========================================================
+   GAME STATE
+   ========================================================= */
+
+let settings = {
+    players:4,
+    mode:"human",
+    sound:true
+};
+
+let game = {
+    players:[],
+    current:0,
+    dice:0,
+    rolling:false,
+    winner:null,
+    canRoll:true,
+    moving:false
+};
+
+/*
+   Create player objects.
+*/
+
+function createPlayers(){
+
+    const all = ["green","yellow","blue","red"];
+
+    const activeColors = all.slice(0,settings.players);
+
+    game.players = activeColors.map((color,index)=>({
+
+        id:index,
+        color:color,
+        name:COLORS[color].name,
+        isComputer:
+            settings.mode==="computer" && index===1,
+        tokens:[
+            {progress:-1,finished:false},
+            {progress:-1,finished:false},
+            {progress:-1,finished:false},
+            {progress:-1,finished:false}
+        ]
+
+    }));
+
 }
 
+/* =========================================================
+   BOARD CREATION
+   ========================================================= */
 
-function togglePassword(){
+const board = document.getElementById("board");
 
-    const input = document.getElementById("password");
+function createBoard(){
 
-    input.type =
-        input.type === "password"
-        ? "text"
-        : "password";
+    document.querySelectorAll(".cell").forEach(e=>e.remove());
+
+    /*
+       create all 225 cells
+    */
+
+    for(let r=0;r<15;r++){
+
+        for(let c=0;c<15;c++){
+
+            const cell=document.createElement("div");
+
+            cell.className="cell";
+
+            cell.dataset.row=r;
+            cell.dataset.col=c;
+
+            const pathIndex = PATH.findIndex(
+                p=>p[0]===r && p[1]===c
+            );
+
+            if(pathIndex!==-1){
+
+                cell.classList.add("path");
+
+                if(SAFE_INDEXES.has(pathIndex)){
+                    cell.classList.add("safe");
+                }
+
+                /*
+                   starting cells
+                */
+
+                for(const color of Object.keys(COLORS)){
+
+                    if(COLORS[color].start===pathIndex){
+                        cell.classList.add("start-"+color);
+                    }
+
+                }
+
+            }
+
+            /*
+               home lanes
+            */
+
+            for(const color of Object.keys(HOME_LANES)){
+
+                const laneIndex=HOME_LANES[color].findIndex(
+                    p=>p[0]===r && p[1]===c
+                );
+
+                if(laneIndex!==-1){
+
+                    cell.classList.add(color+"Lane");
+
+                }
+
+            }
+
+            board.appendChild(cell);
+
+        }
+
+    }
+
+    /*
+       Re-add overlays because cells were inserted
+       before them in DOM.
+    */
+
+    board.appendChild(document.querySelector(".home.green"));
+    board.appendChild(document.querySelector(".home.yellow"));
+    board.appendChild(document.querySelector(".home.red"));
+    board.appendChild(document.querySelector(".home.blue"));
+    board.appendChild(document.querySelector(".center"));
+
 }
 
+/* =========================================================
+   PLAYER PANELS
+   ========================================================= */
 
-/* ==========================================
-   EMPLOYEE DATABASE ENGINE
-========================================== */
+function renderPlayers(){
 
-function generateEmployee(id){
+    const left=document.getElementById("leftPlayers");
+    const right=document.getElementById("rightPlayers");
 
-    const number = id - FIRST_ID + 1;
+    left.innerHTML="";
+    right.innerHTML="";
+
+    game.players.forEach((p,index)=>{
+
+        const card=document.createElement("div");
+
+        card.className="playerCard";
+
+        card.style.setProperty("--player",COLORS[p.color].css);
+
+        card.innerHTML=`
+
+            <div class="playerHead">
+
+                <span class="colorDot"></span>
+
+                <span>${p.name}</span>
+
+                ${p.isComputer ? "🤖" : "👤"}
+
+            </div>
+
+            <div class="playerStatus" id="status-${index}">
+                READY
+            </div>
+
+            <div class="playerProgress">
+                <div id="progress-${index}"></div>
+            </div>
+
+        `;
+
+        /*
+           distribute panels
+        */
+
+        if(index<2){
+            left.appendChild(card);
+        }else{
+            right.appendChild(card);
+        }
+
+    });
+
+    updatePlayersUI();
+
+}
+
+/* =========================================================
+   PLAYER UI
+   ========================================================= */
+
+function updatePlayersUI(){
+
+    document.querySelectorAll(".playerCard").forEach(
+        card=>card.classList.remove("active")
+    );
+
+    game.players.forEach((p,index)=>{
+
+        const cards=document.querySelectorAll(".playerCard");
+
+        /*
+           because cards are split into left/right,
+           find by color.
+        */
+
+        cards.forEach(card=>{
+
+            const head=card.querySelector(".playerHead");
+
+            if(head && head.textContent.includes(p.name)){
+
+                if(index===game.current){
+                    card.classList.add("active");
+                }
+
+            }
+
+        });
+
+        const status=document.getElementById("status-"+index);
+
+        const progress=document.getElementById("progress-"+index);
+
+        if(status){
+
+            const finished=p.tokens.filter(
+                t=>t.finished
+            ).length;
+
+            const home=p.tokens.filter(
+                t=>t.progress===-1
+            ).length;
+
+            status.textContent=
+                `${finished}/4 HOME • ${home}/4 YARD`;
+
+            if(p.isComputer){
+                status.textContent+=" • AI";
+            }
+
+        }
+
+        if(progress){
+
+            const finished=p.tokens.filter(
+                t=>t.finished
+            ).length;
+
+            progress.style.width=(finished/4*100)+"%";
+
+        }
+
+    });
+
+}
+
+/* =========================================================
+   TOKEN DOM
+   ========================================================= */
+
+let tokenElements=[];
+
+function createTokens(){
+
+    tokenElements.forEach(t=>t.remove());
+
+    tokenElements=[];
+
+    game.players.forEach((p,playerIndex)=>{
+
+        p.tokens.forEach((token,tokenIndex)=>{
+
+            const el=document.createElement("div");
+
+            el.className=`token ${p.color}`;
+
+            el.style.setProperty(
+                "--tokenGlow",
+                COLORS[p.color].css
+            );
+
+            el.dataset.player=playerIndex;
+            el.dataset.token=tokenIndex;
+
+            el.addEventListener("click",()=>{
+
+                if(game.moving)return;
+
+                if(playerIndex!==game.current)return;
+
+                if(p.isComputer)return;
+
+                if(!game.dice)return;
+
+                if(!isValidMove(p,token,game.dice)){
+                    showToast("Ye goti abhi move nahi ho sakti");
+                    return;
+                }
+
+                moveToken(playerIndex,tokenIndex);
+
+            });
+
+            board.appendChild(el);
+
+            tokenElements.push(el);
+
+        });
+
+    });
+
+    positionTokens();
+
+}
+
+/* =========================================================
+   POSITION CALCULATION
+   ========================================================= */
+
+function cellCenter(row,col){
 
     return {
 
-        id: id,
+        x:(col+0.5)/15*100,
 
-        name:
-            "NAME" +
-            String(number).padStart(5,"0"),
-
-        job:
-            "JOB" +
-            String(number).padStart(6,"0"),
-
-        posting:
-            "POST" +
-            String(number).padStart(6,"0")
+        y:(row+0.5)/15*100
 
     };
+
 }
 
+function getTokenPosition(playerIndex,tokenIndex){
 
-/* ==========================================
-   SEARCH
-========================================== */
+    const player=game.players[playerIndex];
 
-function searchEmployee(){
+    const token=player.tokens[tokenIndex];
 
-    const input =
-        document.getElementById("employeeId");
+    /*
+       token in yard
+    */
 
-    const result =
-        document.getElementById("result");
+    if(token.progress===-1){
 
-    const value =
-        input.value.trim();
+        return YARDS[player.color][tokenIndex];
 
-    const id = Number(value);
-
-    result.style.display = "block";
-
-    if(
-        !/^\d{10}$/.test(value) ||
-        id < FIRST_ID ||
-        id > LAST_ID
-    ){
-
-        result.innerHTML = `
-            <div class="not-found">
-                ⚠️ Employee ID not found.<br><br>
-                Valid range:
-                <b>${FIRST_ID}</b>
-                →
-                <b>${LAST_ID}</b>
-            </div>
-        `;
-
-        return;
     }
 
+    /*
+       token finished
+    */
 
-    const employee = generateEmployee(id);
+    if(token.finished){
 
-    result.innerHTML = `
+        return [50,50];
 
-        <div class="profile">
+    }
 
-            <div class="profile-top">
+    /*
+       home lane
+    */
 
-                <div class="avatar">
-                    ${employee.name.substring(4,6)}
-                </div>
+    if(token.progress>=52){
 
-                <div>
-                    <h3>${employee.name}</h3>
-                    <span>
-                        EMPLOYEE ID • ${employee.id}
-                    </span>
-                </div>
+        const laneIndex=token.progress-52;
 
-            </div>
+        const [r,c]=HOME_LANES[player.color][laneIndex];
 
+        const pos=cellCenter(r,c);
 
-            <div class="details">
+        return [pos.x,pos.y];
 
-                <div class="detail">
-                    <label>EMPLOYEE ID</label>
-                    <b>${employee.id}</b>
-                </div>
+    }
 
-                <div class="detail">
-                    <label>NAME</label>
-                    <b>${employee.name}</b>
-                </div>
+    /*
+       main track
+    */
 
-                <div class="detail">
-                    <label>JOB</label>
-                    <b>${employee.job}</b>
-                </div>
+    const index=
+        (COLORS[player.color].start+token.progress)%52;
 
-                <div class="detail">
-                    <label>POSTING</label>
-                    <b>${employee.posting}</b>
-                </div>
+    const [r,c]=PATH[index];
 
-                <div class="detail">
-                    <label>STATUS</label>
-                    <b style="color:var(--green)">
-                        ACTIVE
-                    </b>
-                </div>
+    const pos=cellCenter(r,c);
 
-                <div class="detail">
-                    <label>RECORD TYPE</label>
-                    <b>SYNTHETIC DEMO</b>
-                </div>
-
-            </div>
-
-        </div>
-    `;
-
-    showToast("Employee record loaded");
+    return [pos.x,pos.y];
 
 }
 
+/* =========================================================
+   POSITION ALL TOKENS
+   ========================================================= */
 
-/* ==========================================
-   MENU
-========================================== */
+function positionTokens(){
 
-function openMenu(){
+    game.players.forEach((p,playerIndex)=>{
 
-    document
-        .getElementById("sidebar")
-        .classList.add("open");
-}
+        p.tokens.forEach((token,tokenIndex)=>{
 
+            const el=tokenElements.find(
+                x=>
+                    Number(x.dataset.player)===playerIndex &&
+                    Number(x.dataset.token)===tokenIndex
+            );
 
-function closeMenu(){
+            if(!el)return;
 
-    document
-        .getElementById("sidebar")
-        .classList.remove("open");
-}
+            const pos=getTokenPosition(
+                playerIndex,
+                tokenIndex
+            );
 
+            el.style.left=pos[0]+"%";
+            el.style.top=pos[1]+"%";
 
-function focusSearch(){
+            if(token.finished){
 
-    closeMenu();
+                el.style.display="none";
 
-    document
-        .getElementById("searchSection")
-        .scrollIntoView({
-            behavior:"smooth"
+            }else{
+
+                el.style.display="block";
+
+            }
+
         });
 
-    setTimeout(()=>{
-
-        document
-            .getElementById("employeeId")
-            .focus();
-
-    },500);
-}
-
-
-function goHome(){
-
-    closeMenu();
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
     });
+
+    updateMovableTokens();
+
 }
 
+/* =========================================================
+   MOVABLE TOKEN HIGHLIGHT
+   ========================================================= */
 
-function showAbout(){
+function updateMovableTokens(){
 
-    closeMenu();
+    tokenElements.forEach(el=>{
+        el.classList.remove("movable");
+    });
 
-    document
-        .getElementById("about")
-        .scrollIntoView({
-            behavior:"smooth"
+    if(!game.dice)return;
+
+    const player=game.players[game.current];
+
+    if(!player || player.isComputer)return;
+
+    player.tokens.forEach((token,index)=>{
+
+        if(isValidMove(player,token,game.dice)){
+
+            const el=tokenElements.find(
+                x=>
+                    Number(x.dataset.player)===game.current &&
+                    Number(x.dataset.token)===index
+            );
+
+            if(el){
+                el.classList.add("movable");
+            }
+
+        }
+
+    });
+
+}
+
+/* =========================================================
+   MOVE RULE
+   ========================================================= */
+
+function isValidMove(player,token,dice){
+
+    if(token.finished)return false;
+
+    /*
+       Yard requires 6
+    */
+
+    if(token.progress===-1){
+
+        return dice===6;
+
+    }
+
+    /*
+       Cannot go beyond home
+    */
+
+    return token.progress+dice<=57;
+
+}
+
+/* =========================================================
+   DICE
+   ========================================================= */
+
+const dice=document.getElementById("dice");
+
+function showDice(number){
+
+    dice.innerHTML="";
+
+    const patterns={
+
+        1:[4],
+
+        2:[0,8],
+
+        3:[0,4,8],
+
+        4:[0,2,6,8],
+
+        5:[0,2,4,6,8],
+
+        6:[0,2,3,5,6,8]
+
+    };
+
+    for(let i=0;i<9;i++){
+
+        const d=document.createElement("div");
+
+        if(patterns[number].includes(i)){
+            d.className="dot";
+        }
+
+        dice.appendChild(d);
+
+    }
+
+}
+
+function rollDice(){
+
+    if(game.rolling || game.moving || !game.canRoll)return;
+
+    const player=game.players[game.current];
+
+    if(player.isComputer)return;
+
+    performRoll();
+
+}
+
+function performRoll(){
+
+    game.rolling=true;
+    game.canRoll=false;
+
+    dice.classList.add("rolling");
+
+    playSound("roll");
+
+    let count=0;
+
+    const timer=setInterval(()=>{
+
+        const random=1+Math.floor(Math.random()*6);
+
+        showDice(random);
+
+        count++;
+
+        if(count>=9){
+
+            clearInterval(timer);
+
+            const result=1+Math.floor(Math.random()*6);
+
+            game.dice=result;
+
+            showDice(result);
+
+            dice.classList.remove("rolling");
+
+            game.rolling=false;
+
+            afterDice();
+
+        }
+
+    },70);
+
+}
+
+/* =========================================================
+   AFTER DICE
+   ========================================================= */
+
+function afterDice(){
+
+    const player=game.players[game.current];
+
+    updateTurnText();
+
+    updateMovableTokens();
+
+    /*
+       possible moves
+    */
+
+    const valid=player.tokens
+        .map((t,i)=>({t,i}))
+        .filter(x=>isValidMove(player,x.t,game.dice));
+
+    if(valid.length===0){
+
+        showToast(
+            `${player.name}: No valid move`
+        );
+
+        setTimeout(()=>{
+
+            nextTurn();
+
+        },800);
+
+        return;
+
+    }
+
+    /*
+       COMPUTER
+    */
+
+    if(player.isComputer){
+
+        setTimeout(()=>{
+
+            computerMove(valid);
+
+        },700);
+
+    }
+
+}
+
+/* =========================================================
+   COMPUTER AI
+   ========================================================= */
+
+function computerMove(valid){
+
+    if(!valid.length)return;
+
+    let best=null;
+
+    /*
+       AI priorities:
+       1. capture
+       2. finish
+       3. leave yard
+       4. highest progress
+    */
+
+    const scored=valid.map(item=>{
+
+        const t=item.t;
+
+        let score=Math.random()*5;
+
+        if(t.progress===-1 && game.dice===6){
+            score+=40;
+        }
+
+        if(t.progress+game.dice>=57){
+            score+=80;
+        }
+
+        if(t.progress>=0){
+            score+=t.progress;
+        }
+
+        return {
+            ...item,
+            score
+        };
+
+    });
+
+    scored.sort((a,b)=>b.score-a.score);
+
+    best=scored[0];
+
+    moveToken(game.current,best.i);
+
+}
+
+/* =========================================================
+   TOKEN MOVEMENT
+   ========================================================= */
+
+async function moveToken(playerIndex,tokenIndex){
+
+    if(game.moving)return;
+
+    const player=game.players[playerIndex];
+
+    const token=player.tokens[tokenIndex];
+
+    if(!isValidMove(player,token,game.dice))return;
+
+    game.moving=true;
+
+    /*
+       Remove highlight
+    */
+
+    updateMovableTokens();
+
+    /*
+       Take out from yard
+    */
+
+    if(token.progress===-1){
+
+        token.progress=0;
+
+        playSound("move");
+
+        positionTokens();
+
+        await wait(350);
+
+    }else{
+
+        /*
+           Animate one cell at a time
+        */
+
+        for(let i=0;i<game.dice;i++){
+
+            token.progress++;
+
+            playSound("step");
+
+            positionTokens();
+
+            await wait(190);
+
+        }
+
+    }
+
+    /*
+       HOME
+    */
+
+    if(token.progress===57){
+
+        token.finished=true;
+
+        playSound("home");
+
+        positionTokens();
+
+        showToast(
+            `${player.name} got one token HOME! 🏠`
+        );
+
+        await wait(400);
+
+    }
+
+    /*
+       Capture
+    */
+
+    captureOpponents(playerIndex,tokenIndex);
+
+    /*
+       Winner?
+    */
+
+    if(checkWinner(playerIndex)){
+
+        game.winner=playerIndex;
+
+        game.moving=false;
+
+        showWinner(player);
+
+        return;
+
+    }
+
+    /*
+       6 = another chance
+    */
+
+    const rolledSix=game.dice===6;
+
+    game.dice=0;
+
+    showDice(1);
+
+    game.moving=false;
+
+    positionTokens();
+
+    updatePlayersUI();
+
+    if(rolledSix){
+
+        game.canRoll=true;
+
+        updateTurnText();
+
+        showToast(
+            `${player.name} rolled 6 — another turn! 🎲`
+        );
+
+        if(player.isComputer){
+
+            setTimeout(()=>{
+
+                if(game.canRoll){
+                    game.canRoll=false;
+                    performComputerRoll();
+                }
+
+            },800);
+
+        }
+
+    }else{
+
+        nextTurn();
+
+    }
+
+}
+
+/* =========================================================
+   COMPUTER ROLL
+   ========================================================= */
+
+function performComputerRoll(){
+
+    if(game.rolling || game.moving)return;
+
+    game.rolling=true;
+
+    dice.classList.add("rolling");
+
+    playSound("roll");
+
+    let count=0;
+
+    const timer=setInterval(()=>{
+
+        showDice(
+            1+Math.floor(Math.random()*6)
+        );
+
+        count++;
+
+        if(count>=9){
+
+            clearInterval(timer);
+
+            game.dice=
+                1+Math.floor(Math.random()*6);
+
+            showDice(game.dice);
+
+            dice.classList.remove("rolling");
+
+            game.rolling=false;
+
+            afterDice();
+
+        }
+
+    },70);
+
+}
+
+/* =========================================================
+   CAPTURE
+   ========================================================= */
+
+function captureOpponents(playerIndex,tokenIndex){
+
+    const attacker=game.players[playerIndex];
+
+    const token=attacker.tokens[tokenIndex];
+
+    if(token.progress<0 || token.progress>=52)return;
+
+    const attackerIndex=
+        (COLORS[attacker.color].start+
+        token.progress)%52;
+
+    if(SAFE_INDEXES.has(attackerIndex))return;
+
+    game.players.forEach((opponent,opIndex)=>{
+
+        if(opIndex===playerIndex)return;
+
+        opponent.tokens.forEach(opToken=>{
+
+            if(
+                opToken.progress>=0 &&
+                opToken.progress<52
+            ){
+
+                const opIndexOnPath=
+                    (COLORS[opponent.color].start+
+                    opToken.progress)%52;
+
+                if(opIndexOnPath===attackerIndex){
+
+                    opToken.progress=-1;
+                    opToken.finished=false;
+
+                    playSound("capture");
+
+                    showToast(
+                        `${attacker.name} captured ${opponent.name}! 💥`
+                    );
+
+                }
+
+            }
+
         });
+
+    });
+
 }
 
+/* =========================================================
+   WINNER
+   ========================================================= */
 
-/* ==========================================
-   LOGOUT
-========================================== */
+function checkWinner(playerIndex){
 
-function logout(){
+    return game.players[playerIndex]
+        .tokens
+        .every(t=>t.finished);
 
-    closeMenu();
-
-    document.getElementById("app").style.display = "none";
-
-    document.getElementById("loginScreen").style.display = "flex";
-
-    document.getElementById("password").value = "";
-
-    document.getElementById("employeeId").value = "";
-
-    document.getElementById("result").style.display = "none";
-
-    showToast("System locked");
 }
 
+function showWinner(player){
 
-/* ==========================================
+    document.getElementById("winnerTitle").textContent=
+        `${player.name} WINS!`;
+
+    document.getElementById("winnerMessage").textContent=
+        `${player.isComputer ? "Computer" : "Player"} ne sabhi 4 gotiyan HOME pahucha di!`;
+
+    document.getElementById("winnerOverlay")
+        .classList.add("show");
+
+    playSound("win");
+
+}
+
+/* =========================================================
+   NEXT TURN
+   ========================================================= */
+
+function nextTurn(){
+
+    game.dice=0;
+
+    showDice(1);
+
+    game.current=
+        (game.current+1)%game.players.length;
+
+    game.canRoll=true;
+
+    updatePlayersUI();
+
+    updateTurnText();
+
+    const player=game.players[game.current];
+
+    if(player.isComputer){
+
+        setTimeout(()=>{
+
+            if(
+                !game.moving &&
+                !game.rolling &&
+                game.canRoll
+            ){
+
+                game.canRoll=false;
+
+                performComputerRoll();
+
+            }
+
+        },850);
+
+    }
+
+}
+
+/* =========================================================
+   TURN TEXT
+   ========================================================= */
+
+function updateTurnText(){
+
+    const p=game.players[game.current];
+
+    if(!p)return;
+
+    const text=document.getElementById("turnText");
+
+    if(game.rolling){
+
+        text.textContent="Rolling dice...";
+
+    }else{
+
+        text.textContent=
+            `${p.name} ${p.isComputer ? "🤖" : "👤"} player's turn`;
+
+    }
+
+}
+
+/* =========================================================
+   SOUND ENGINE
+   ========================================================= */
+
+let audioCtx=null;
+
+function audio(){
+
+    if(!settings.sound)return null;
+
+    if(!audioCtx){
+
+        audioCtx=
+            new (window.AudioContext ||
+            window.webkitAudioContext)();
+
+    }
+
+    return audioCtx;
+
+}
+
+function beep(freq,duration,type="sine"){
+
+    if(!settings.sound)return;
+
+    const ctx=audio();
+
+    if(!ctx)return;
+
+    const osc=ctx.createOscillator();
+
+    const gain=ctx.createGain();
+
+    osc.type=type;
+
+    osc.frequency.value=freq;
+
+    gain.gain.setValueAtTime(
+        .0001,
+        ctx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .12,
+        ctx.currentTime+.01
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        ctx.currentTime+duration
+    );
+
+    osc.connect(gain);
+
+    gain.connect(ctx.destination);
+
+    osc.start();
+
+    osc.stop(
+        ctx.currentTime+duration+.02
+    );
+
+}
+
+function playSound(type){
+
+    if(!settings.sound)return;
+
+    if(type==="roll"){
+
+        beep(180,.07,"square");
+
+        setTimeout(
+            ()=>beep(260,.07,"square"),
+            80
+        );
+
+    }
+
+    if(type==="step"){
+        beep(340,.055,"triangle");
+    }
+
+    if(type==="move"){
+        beep(500,.1,"triangle");
+    }
+
+    if(type==="capture"){
+
+        beep(160,.12,"sawtooth");
+
+        setTimeout(
+            ()=>beep(80,.16,"sawtooth"),
+            90
+        );
+
+    }
+
+    if(type==="home"){
+
+        beep(500,.12);
+
+        setTimeout(
+            ()=>beep(700,.12),
+            120
+        );
+
+        setTimeout(
+            ()=>beep(900,.2),
+            240
+        );
+
+    }
+
+    if(type==="win"){
+
+        [500,650,800,1000].forEach(
+            (f,i)=>{
+                setTimeout(
+                    ()=>beep(f,.22),
+                    i*130
+                );
+            }
+        );
+
+    }
+
+}
+
+/* =========================================================
    TOAST
-========================================== */
+   ========================================================= */
+
+let toastTimer=null;
 
 function showToast(message){
 
-    const toast =
-        document.getElementById("toast");
+    const toast=document.getElementById("toast");
 
-    toast.textContent = message;
+    toast.textContent=message;
 
     toast.classList.add("show");
 
-    setTimeout(()=>{
+    clearTimeout(toastTimer);
+
+    toastTimer=setTimeout(()=>{
 
         toast.classList.remove("show");
 
-    },2200);
+    },1800);
+
+}
+
+/* =========================================================
+   WAIT
+   ========================================================= */
+
+function wait(ms){
+
+    return new Promise(
+        resolve=>setTimeout(resolve,ms)
+    );
+
+}
+
+/* =========================================================
+   MENU
+   ========================================================= */
+
+const menuOverlay=
+    document.getElementById("menuOverlay");
+
+document.getElementById("menuBtn")
+    .onclick=()=>{
+        menuOverlay.classList.add("show");
+    };
+
+document.getElementById("closeMenuBtn")
+    .onclick=()=>{
+        menuOverlay.classList.remove("show");
+    };
+
+/*
+   Player selection
+*/
+
+document.querySelectorAll(
+    "[data-players]"
+).forEach(btn=>{
+
+    btn.onclick=()=>{
+
+        document.querySelectorAll(
+            "[data-players]"
+        ).forEach(b=>b.classList.remove("active"));
+
+        btn.classList.add("active");
+
+        settings.players=
+            Number(btn.dataset.players);
+
+    };
+
+});
+
+/*
+   Mode selection
+*/
+
+document.querySelectorAll(
+    "[data-mode]"
+).forEach(btn=>{
+
+    btn.onclick=()=>{
+
+        document.querySelectorAll(
+            "[data-mode]"
+        ).forEach(b=>b.classList.remove("active"));
+
+        btn.classList.add("active");
+
+        settings.mode=btn.dataset.mode;
+
+    };
+
+});
+
+/*
+   Sound
+*/
+
+document.getElementById("soundOn").onclick=()=>{
+
+    settings.sound=true;
+
+    document.getElementById("soundOn")
+        .classList.add("active");
+
+    document.getElementById("soundOff")
+        .classList.remove("active");
+
+    document.getElementById("soundBtn")
+        .textContent="🔊";
+
+};
+
+document.getElementById("soundOff").onclick=()=>{
+
+    settings.sound=false;
+
+    document.getElementById("soundOff")
+        .classList.add("active");
+
+    document.getElementById("soundOn")
+        .classList.remove("active");
+
+    document.getElementById("soundBtn")
+        .textContent="🔇";
+
+};
+
+document.getElementById("soundBtn").onclick=()=>{
+
+    settings.sound=!settings.sound;
+
+    document.getElementById("soundBtn")
+        .textContent=
+            settings.sound ? "🔊" : "🔇";
+
+    document.getElementById(
+        settings.sound ? "soundOn" : "soundOff"
+    ).classList.add("active");
+
+    document.getElementById(
+        settings.sound ? "soundOff" : "soundOn"
+    ).classList.remove("active");
+
+};
+
+/* =========================================================
+   NEW GAME
+   ========================================================= */
+
+function newGame(){
+
+    document.getElementById(
+        "winnerOverlay"
+    ).classList.remove("show");
+
+    game={
+        players:[],
+        current:0,
+        dice:0,
+        rolling:false,
+        winner:null,
+        canRoll:true,
+        moving:false
+    };
+
+    createPlayers();
+
+    createBoard();
+
+    createTokens();
+
+    showDice(1);
+
+    updateTurnText();
+
+    updatePlayersUI();
+
+    /*
+       Save settings
+    */
+
+    localStorage.setItem(
+        "am4rff_ludo_settings",
+        JSON.stringify(settings)
+    );
+
+}
+
+/* =========================================================
+   NEW GAME BUTTONS
+   ========================================================= */
+
+document.getElementById("newGameBtn")
+    .onclick=()=>{
+
+        menuOverlay.classList.remove("show");
+
+        newGame();
+
+        showToast("New Ludo game started 🎮");
+
+    };
+
+document.getElementById("playAgainBtn")
+    .onclick=()=>{
+
+        newGame();
+
+    };
+
+document.getElementById("winnerCloseBtn")
+    .onclick=()=>{
+
+        document.getElementById(
+            "winnerOverlay"
+        ).classList.remove("show");
+
+    };
+
+/* =========================================================
+   DICE CLICK
+   ========================================================= */
+
+document.getElementById("rollBtn")
+    .onclick=rollDice;
+
+dice.onclick=rollDice;
+
+/* =========================================================
+   LOAD SETTINGS
+   ========================================================= */
+
+try{
+
+    const saved=
+        localStorage.getItem(
+            "am4rff_ludo_settings"
+        );
+
+    if(saved){
+
+        const parsed=JSON.parse(saved);
+
+        if(parsed.players)
+            settings.players=parsed.players;
+
+        if(parsed.mode)
+            settings.mode=parsed.mode;
+
+        if(typeof parsed.sound==="boolean")
+            settings.sound=parsed.sound;
+
+    }
+
+}catch(e){
+
+    console.log("Settings load failed");
+
+}
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+newGame();
+
+</script>
+
+</body>
+</html>
